@@ -30,6 +30,15 @@ struct ContentView: View {
 
     let coreDataManager = CoreDataManager.shared
 
+    init() {
+//        UISegmentedControl.appearance().setTitleTextAttributes([.foregroundColor : UIColor(Color.accentColor)], for: .selected)
+//        UISegmentedControl.appearance().setTitleTextAttributes([.foregroundColor : UIColor.blue], for: .normal)
+//        UISegmentedControl.appearance().selectedSegmentTintColor = .blue
+//        UISegmentedControl.appearance().backgroundColor = .yellow
+
+    }
+
+
     var body: some View {
         NavigationView {
             VStack {
@@ -39,9 +48,12 @@ struct ContentView: View {
                     Picker("Priority", selection: $selectedPriority) {
                         ForEach(Priority.allCases) { priority in
                             Text(priority.title).tag(priority)
+
                         }
                     }
+                    .colorMultiply(Priority.styleForPriority(selectedPriority.rawValue))
                     .pickerStyle(.segmented)
+
                     Button("Save") {
                         saveTask()
                         title = ""
@@ -64,7 +76,7 @@ struct ContentView: View {
                         .onDelete(perform: deleteTask)
                     } header: {
                         Label("Focus", systemImage: "target")
-                            .foregroundColor(.red)
+                            .foregroundColor(.pink)
                     } footer: {
                         HStack {
                             Spacer()
@@ -107,7 +119,6 @@ struct ContentView: View {
                         }
                     }
                 }
-                .padding(.top, 20)
 //                .listStyle(.grouped)
             }
 //            .navigationTitle("YATDA")
@@ -135,9 +146,11 @@ struct ContentView: View {
     }
 
     private func deleteTask(at offsets: IndexSet) {
-        offsets.forEach { offset in
-            let task = allTasks[offset]
-            coreDataManager.deleteTask(task: task)
+        withAnimation {
+            offsets.forEach { offset in
+                let task = allTasks[offset]
+                coreDataManager.deleteTask(task: task)
+            }
         }
     }
 }

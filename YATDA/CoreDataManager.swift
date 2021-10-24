@@ -28,7 +28,7 @@ class CoreDataManager {
         newTask.completed = false
         newTask.isFavorite = true
         newTask.dateCreated = Date()
-        shared.save()
+        try? viewContext.save()
         return result
     }()
 

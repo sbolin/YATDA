@@ -11,14 +11,14 @@ struct TodoListView: View {
     @Environment(\.managedObjectContext) private var viewContext
     @ObservedObject var task: Task
 
-
     var body: some View {
         HStack {
             Circle()
                 .fill(Priority.styleForPriority(task.priority ?? "Medium"))
                 .frame(width: 15, height: 15)
             Spacer().frame(width: 12)
-            Text(task.title ?? "")
+            TextField("", text: $task.title ?? "")
+            //            Text(task.title ?? "")
             Spacer()
             Image(systemName: task.isFavorite ? "target": "scope")
                 .foregroundColor(.red)
@@ -31,26 +31,30 @@ struct TodoListView: View {
                     updateCompletion()
                 }
         }
+        /// Helper function to unwrap optional binding
     }
 
     private func updateTask() {
-//       $task.isFavorite.toggle
-        let oldValue = task.isFavorite
-        task.isFavorite = !oldValue
-        do {
-            try viewContext.save()
-        } catch {
-            print(error.localizedDescription)
+        withAnimation {
+            let oldValue = task.isFavorite
+            task.isFavorite = !oldValue
+            do {
+                try viewContext.save()
+            } catch {
+                print(error.localizedDescription)
+            }
         }
     }
 
     private func updateCompletion() {
-        let oldValue = task.completed
-        task.completed = !oldValue
-        do {
-            try viewContext.save()
-        } catch {
-            print(error.localizedDescription)
+        withAnimation {
+            let oldValue = task.completed
+            task.completed = !oldValue
+            do {
+                try viewContext.save()
+            } catch {
+                print(error.localizedDescription)
+            }
         }
     }
 }
@@ -61,4 +65,11 @@ struct TodoListView_Previews: PreviewProvider {
         TodoListView(task: Task(context: context))
             .environment(\.managedObjectContext, context)
     }
+}
+
+func ??<T>(lhs: Binding<Optional<T>>, rhs: T) -> Binding<T> {
+    Binding(
+        get: { lhs.wrappedValue ?? rhs },
+        set: { lhs.wrappedValue = $0 }
+    )
 }
