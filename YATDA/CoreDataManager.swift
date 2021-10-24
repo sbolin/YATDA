@@ -10,40 +10,78 @@ import CoreData
 
 class CoreDataManager {
     // Singleton for whole app to use
-    static let shared: CoreDataManager = CoreDataManager()
+    static let shared = CoreDataManager()
 
-    // Storage for Core Data
-    let container: NSPersistentContainer
-
-    // Convenience
-    var viewContext: NSManagedObjectContext {
-        return container.viewContext
-    }
-
-    static var preview: CoreDataManager = {
+    static let preview: CoreDataManager = {
         let result = CoreDataManager(inMemory: true)
-        let viewContext = result.container.viewContext
-        let newTask = Task(context: viewContext)
-        newTask.title = "Trial Task"
-        newTask.completed = false
-        newTask.isFavorite = true
-        newTask.dateCreated = Date()
-        try? viewContext.save()
+        Task.makePreview()
         return result
     }()
 
-    init(inMemory: Bool = false) {
-        container = NSPersistentContainer(name: "SimpleTodoModel")
-        if inMemory {
-            container.persistentStoreDescriptions.first?.url = URL(fileURLWithPath: "/dev/null")
-        }
-        container.loadPersistentStores { description, error in
-            if let error = error {
-                fatalError("Unable to initialize core data \(error)")
+    private let inMemory: Bool
 
+    private init(inMemory: Bool = false) {
+        self.inMemory = inMemory
+    }
+
+    lazy var container: NSPersistentContainer = {
+        let container = NSPersistentContainer(name: "SimpleTodoModel")
+        guard let description = container.persistentStoreDescriptions.first else {
+            fatalError("Failed to retrieve a persistent store description")
+        }
+        if inMemory {
+            description.url = URL(fileURLWithPath: "/dev/null")
+        }
+        // Enable persistent store remote change notifications
+        /// - Tag: persistentStoreRemoteChange
+        description.setOption(true as NSNumber,
+                              forKey: NSPersistentStoreRemoteChangeNotificationPostOptionKey)
+
+        // Enable persistent history tracking
+        /// - Tag: persistentHistoryTracking
+        description.setOption(true as NSNumber,
+                              forKey: NSPersistentHistoryTrackingKey)
+
+        container.loadPersistentStores { storeDescription, error in
+            if let error = error as NSError? {
+                fatalError("Unresolved error \(error), \(error.userInfo)")
             }
         }
-    }
+        // This sample refreshes UI by consuming store changes via persistent history tracking.
+        /// - Tag: viewContextMergeParentChanges
+        container.viewContext.automaticallyMergesChangesFromParent = false
+        container.viewContext.name = "viewContext"
+        /// - Tag: viewContextMergePolicy
+        container.viewContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+        container.viewContext.undoManager = nil
+        container.viewContext.shouldDeleteInaccessibleFaults = true
+        return container
+    }()
+
+//    init(inMemory: Bool = false) {
+//        container = NSPersistentContainer(name: "SimpleTodoModel")
+//        guard let description = container.persistentStoreDescriptions.first else {
+//            fatalError("Failed to retrieve a persistent store description")
+//        }
+//        if inMemory {
+//            description.url = URL(fileURLWithPath: "/dev/null")
+//        }
+//        // Enable persistent store remote change notifications
+//        /// - Tag: persistentStoreRemoteChange
+//        description.setOption(true as NSNumber,
+//                              forKey: NSPersistentStoreRemoteChangeNotificationPostOptionKey)
+//
+//        // Enable persistent history tracking
+//        /// - Tag: persistentHistoryTracking
+//        description.setOption(true as NSNumber,
+//                              forKey: NSPersistentHistoryTrackingKey)
+//
+//        container.loadPersistentStores { storeDescription, error in
+//            if let error = error as NSError? {
+//                fatalError("Unresolved error \(error), \(error.userInfo)")
+//            }
+//        }
+//    }
 
     // utility functions
     func save() {

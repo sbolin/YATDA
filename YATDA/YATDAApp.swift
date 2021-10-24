@@ -9,11 +9,11 @@ import SwiftUI
 
 @main
 struct YATDAApp: App {
-//    let persistentContainer = CoreDataManager.shared.persistentContainer
+    let persistentContainer = CoreDataManager.shared.container
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .environment(\.managedObjectContext, CoreDataManager.shared.container.viewContext)
+                .environment(\.managedObjectContext, persistentContainer.viewContext)
         }
     }
 }
