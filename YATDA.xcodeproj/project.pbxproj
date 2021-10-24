@@ -18,6 +18,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		157569C42725EFD4001B387D /* ToDo.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = ToDo.md; sourceTree = "<group>"; };
 		15A0F8FF2721E07D000B652A /* YATDA.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = YATDA.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		15A0F9022721E07D000B652A /* YATDAApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YATDAApp.swift; sourceTree = "<group>"; };
 		15A0F9042721E07D000B652A /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -64,6 +65,7 @@
 				15A0F9352722C6EF000B652A /* TodoListView.swift */,
 				15A0F9332722C2CA000B652A /* Priority.swift */,
 				15A0F9132721E287000B652A /* CoreDataManager.swift */,
+				157569C42725EFD4001B387D /* ToDo.md */,
 				15A0F9102721E1E7000B652A /* SimpleTodoModel.xcdatamodeld */,
 				15A0F9062721E07F000B652A /* Assets.xcassets */,
 				15A0F9082721E07F000B652A /* Preview Content */,

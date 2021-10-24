@@ -30,13 +30,13 @@ struct ContentView: View {
 
     let coreDataManager = CoreDataManager.shared
 
-    init() {
+//    init() {
 //        UISegmentedControl.appearance().setTitleTextAttributes([.foregroundColor : UIColor(Color.accentColor)], for: .selected)
 //        UISegmentedControl.appearance().setTitleTextAttributes([.foregroundColor : UIColor.blue], for: .normal)
 //        UISegmentedControl.appearance().selectedSegmentTintColor = .blue
 //        UISegmentedControl.appearance().backgroundColor = .yellow
 
-    }
+//    }
 
 
     var body: some View {
