@@ -11,6 +11,10 @@
 		15A0F9052721E07D000B652A /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A0F9042721E07D000B652A /* ContentView.swift */; };
 		15A0F9072721E07F000B652A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 15A0F9062721E07F000B652A /* Assets.xcassets */; };
 		15A0F90A2721E07F000B652A /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 15A0F9092721E07F000B652A /* Preview Assets.xcassets */; };
+		15A0F9122721E1E7000B652A /* SimpleTodoModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 15A0F9102721E1E7000B652A /* SimpleTodoModel.xcdatamodeld */; };
+		15A0F9142721E287000B652A /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A0F9132721E287000B652A /* CoreDataManager.swift */; };
+		15A0F9342722C2CA000B652A /* Priority.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A0F9332722C2CA000B652A /* Priority.swift */; };
+		15A0F9362722C6EF000B652A /* TodoListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A0F9352722C6EF000B652A /* TodoListView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -19,6 +23,10 @@
 		15A0F9042721E07D000B652A /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		15A0F9062721E07F000B652A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		15A0F9092721E07F000B652A /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		15A0F9112721E1E7000B652A /* SimpleTodoModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = SimpleTodoModel.xcdatamodel; sourceTree = "<group>"; };
+		15A0F9132721E287000B652A /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
+		15A0F9332722C2CA000B652A /* Priority.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Priority.swift; sourceTree = "<group>"; };
+		15A0F9352722C6EF000B652A /* TodoListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoListView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,6 +61,10 @@
 			children = (
 				15A0F9022721E07D000B652A /* YATDAApp.swift */,
 				15A0F9042721E07D000B652A /* ContentView.swift */,
+				15A0F9352722C6EF000B652A /* TodoListView.swift */,
+				15A0F9332722C2CA000B652A /* Priority.swift */,
+				15A0F9132721E287000B652A /* CoreDataManager.swift */,
+				15A0F9102721E1E7000B652A /* SimpleTodoModel.xcdatamodeld */,
 				15A0F9062721E07F000B652A /* Assets.xcassets */,
 				15A0F9082721E07F000B652A /* Preview Content */,
 			);
@@ -137,7 +149,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				15A0F9122721E1E7000B652A /* SimpleTodoModel.xcdatamodeld in Sources */,
 				15A0F9052721E07D000B652A /* ContentView.swift in Sources */,
+				15A0F9362722C6EF000B652A /* TodoListView.swift in Sources */,
+				15A0F9142721E287000B652A /* CoreDataManager.swift in Sources */,
+				15A0F9342722C2CA000B652A /* Priority.swift in Sources */,
 				15A0F9032721E07D000B652A /* YATDAApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -341,6 +357,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		15A0F9102721E1E7000B652A /* SimpleTodoModel.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				15A0F9112721E1E7000B652A /* SimpleTodoModel.xcdatamodel */,
+			);
+			currentVersion = 15A0F9112721E1E7000B652A /* SimpleTodoModel.xcdatamodel */;
+			path = SimpleTodoModel.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 15A0F8F72721E07D000B652A /* Project object */;
 }
