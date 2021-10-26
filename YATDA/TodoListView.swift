@@ -23,17 +23,21 @@ struct TodoListView: View {
             Image(systemName: task.isFavorite ? "target": "scope")
                 .foregroundColor(.red)
                 .onTapGesture {
-                    updateTask()
+                    withAnimation {
+                        updateTask()
+                    }
                 }
             Image(systemName: task.completed ? "checkmark.circle.fill": "checkmark.circle")
                 .foregroundColor(.green)
                 .onTapGesture {
-                    updateCompletion()
+                    withAnimation {
+                        updateCompletion()
+                    }
                 }
         }
-        /// Helper function to unwrap optional binding
     }
 
+    /// Helper function to unwrap optional binding
     private func updateTask() {
         withAnimation {
             let oldValue = task.isFavorite
@@ -50,6 +54,9 @@ struct TodoListView: View {
         withAnimation {
             let oldValue = task.completed
             task.completed = !oldValue
+            if !oldValue {
+                task.isFavorite = false
+            }
             do {
                 try viewContext.save()
             } catch {
@@ -59,13 +66,13 @@ struct TodoListView: View {
     }
 }
 
-struct TodoListView_Previews: PreviewProvider {
-    static var previews: some View {
-        let context = CoreDataManager.preview.container.viewContext
-        TodoListView(task: Task(context: context))
-            .environment(\.managedObjectContext, context)
-    }
-}
+//struct TodoListView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        let context = CoreDataManager.preview.container.viewContext
+//        TodoListView(task: Task(context: context))
+//            .environment(\.managedObjectContext, context)
+//    }
+//}
 
 func ??<T>(lhs: Binding<Optional<T>>, rhs: T) -> Binding<T> {
     Binding(

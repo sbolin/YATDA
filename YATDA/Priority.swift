@@ -11,9 +11,9 @@ enum Priority: String, Identifiable, CaseIterable {
     var id: UUID {
         return UUID()
     }
-    case low = "Low"
-    case medium = "Medium"
-    case high = "High"
+    case low = "Low" // 0
+    case medium = "Medium" // 1
+    case high = "High" // 2
 
     static func styleForPriority(_ value: String) -> Color {
         let priority = Priority(rawValue: value)

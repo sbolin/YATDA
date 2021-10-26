@@ -9,42 +9,55 @@ import SwiftUI
 
 struct ContentView: View {
     @Environment(\.managedObjectContext) private var viewContext
+    @FocusState private var taskIsFocused: Bool
 
     @State private var title: String = ""
     @State private var selectedPriority: Priority = .medium
+    //
+    //   @State private var isEditing: EditMode = .inactive
+    //
 
-    @FetchRequest(entity: Task.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \Task.dateCreated, ascending: false)])
+    @FetchRequest(entity: Task.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \Task.priorityID, ascending: false), NSSortDescriptor(keyPath: \Task.title, ascending: false)])
     var allTasks: FetchedResults<Task>
 
-    var activeTodo: [Task] {
-        allTasks.filter { $0.completed == false }
+    private var activeTodo: [Task] {
+        allTasks.filter { $0.completed == false && $0.isFavorite == false }
     }
 
-    var completedTodo: [Task] {
+    private var completedTodo: [Task] {
         allTasks.filter { $0.completed == true }
     }
 
-    var focusTodo: [Task] {
+    private var focusTodo: [Task] {
         allTasks.filter { $0.isFavorite == true }
+    }
+
+    private var todoIsValid: Bool {
+        !title.isEmpty
+    }
+
+    private var buttonColor: Color {
+        return todoIsValid ? .accentColor : .secondary
     }
 
     let coreDataManager = CoreDataManager.shared
 
-//    init() {
-//        UISegmentedControl.appearance().setTitleTextAttributes([.foregroundColor : UIColor(Color.accentColor)], for: .selected)
-//        UISegmentedControl.appearance().setTitleTextAttributes([.foregroundColor : UIColor.blue], for: .normal)
-//        UISegmentedControl.appearance().selectedSegmentTintColor = .blue
-//        UISegmentedControl.appearance().backgroundColor = .yellow
+    //    init() {
+    //        UISegmentedControl.appearance().setTitleTextAttributes([.foregroundColor : UIColor(Color.accentColor)], for: .selected)
+    //        UISegmentedControl.appearance().setTitleTextAttributes([.foregroundColor : UIColor.blue], for: .normal)
+    //        UISegmentedControl.appearance().selectedSegmentTintColor = .blue
+    //        UISegmentedControl.appearance().backgroundColor = .yellow
 
-//    }
+    //    }
 
 
     var body: some View {
         NavigationView {
             VStack {
                 Group {
-                    TextField("Enter title", text: $title)
+                    TextField("Enter task", text: $title)
                         .textFieldStyle(.roundedBorder)
+                        .focused($taskIsFocused)
                     Picker("Priority", selection: $selectedPriority) {
                         ForEach(Priority.allCases) { priority in
                             Text(priority.title).tag(priority)
@@ -54,12 +67,14 @@ struct ContentView: View {
                     .colorMultiply(Priority.styleForPriority(selectedPriority.rawValue))
                     .pickerStyle(.segmented)
 
-                    Button("Save") {
+                    Button("Add Task") {
                         saveTask()
                         title = ""
+                        taskIsFocused = false
                     }
+                    .disabled(!todoIsValid)
                     .frame(width: 125, height: 35)
-                    .background(Color.accentColor)
+                    .background(buttonColor)
                     .foregroundColor(.white)
                     .clipShape(RoundedRectangle(cornerRadius: 10.0, style: .continuous))
                     Rectangle()
@@ -84,6 +99,7 @@ struct ContentView: View {
                                 .font(.footnote)
                             .foregroundColor(.secondary)                        }
                     }
+                    .accentColor(.pink)
 
                     Section {
                         ForEach(activeTodo) { task in
@@ -92,7 +108,7 @@ struct ContentView: View {
                         .onDelete(perform: deleteTask)
                     } header: {
                         Label("To Do", systemImage: "checkmark.circle")
-                        .foregroundColor(.orange)
+                            .foregroundColor(.cyan)
                     } footer: {
                         HStack {
                             Spacer()
@@ -101,6 +117,7 @@ struct ContentView: View {
                                 .foregroundColor(.secondary)
                         }
                     }
+                    .accentColor(.cyan)
 
                     Section {
                         ForEach(completedTodo) { task in
@@ -118,10 +135,11 @@ struct ContentView: View {
                                 .foregroundColor(.secondary)
                         }
                     }
+                    .accentColor(.green)
                 }
-//                .listStyle(.grouped)
+                //                .listStyle(.grouped)
             }
-//            .navigationTitle("YATDA")
+            //            .navigationTitle("YATDA")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .principal) {
@@ -132,17 +150,31 @@ struct ContentView: View {
                             .foregroundColor(.green)
                     }
                 }
+                //                ToolbarItem(placement: .navigationBarTrailing) {
+                //                    EditButton()
+                //                        .buttonStyle(.bordered)
+                //                }
             }
+            //            .environment(\.editMode, $isEditing)
         }
     }
 
     private func saveTask() {
-            let task = Task(context: viewContext)
-            task.title = title
-            task.priority = selectedPriority.rawValue
-            task.dateCreated = Date()
-            task.completed = false
-            coreDataManager.save()
+        let task = Task(context: viewContext)
+        task.title = title
+        task.id = UUID()
+        task.priority = selectedPriority.rawValue
+        switch selectedPriority {
+        case .low:
+            task.priorityID = 0
+        case .medium:
+            task.priorityID = 1
+        case .high:
+            task.priorityID = 2
+        }
+        task.dateCreated = Date()
+        task.completed = false
+        coreDataManager.save()
     }
 
     private func deleteTask(at offsets: IndexSet) {

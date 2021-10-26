@@ -58,31 +58,6 @@ class CoreDataManager {
         return container
     }()
 
-//    init(inMemory: Bool = false) {
-//        container = NSPersistentContainer(name: "SimpleTodoModel")
-//        guard let description = container.persistentStoreDescriptions.first else {
-//            fatalError("Failed to retrieve a persistent store description")
-//        }
-//        if inMemory {
-//            description.url = URL(fileURLWithPath: "/dev/null")
-//        }
-//        // Enable persistent store remote change notifications
-//        /// - Tag: persistentStoreRemoteChange
-//        description.setOption(true as NSNumber,
-//                              forKey: NSPersistentStoreRemoteChangeNotificationPostOptionKey)
-//
-//        // Enable persistent history tracking
-//        /// - Tag: persistentHistoryTracking
-//        description.setOption(true as NSNumber,
-//                              forKey: NSPersistentHistoryTrackingKey)
-//
-//        container.loadPersistentStores { storeDescription, error in
-//            if let error = error as NSError? {
-//                fatalError("Unresolved error \(error), \(error.userInfo)")
-//            }
-//        }
-//    }
-
     // utility functions
     func save() {
         let context = container.viewContext
