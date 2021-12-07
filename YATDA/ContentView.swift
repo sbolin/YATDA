@@ -9,27 +9,41 @@ import SwiftUI
 
 struct ContentView: View {
     @Environment(\.managedObjectContext) private var viewContext
-    @FocusState private var taskIsFocused: Bool
+    let coreDataManager: CoreDataManager = .shared
 
+    @FetchRequest<Task>(
+        sortDescriptors: [
+            SortDescriptor(\Task.priorityID, order: .forward),
+            SortDescriptor(\Task.dateCreated, order: .reverse)
+        ],
+        animation: .default)
+    private var allTasks: FetchedResults<Task>
+
+    @FocusState private var taskIsFocused: Bool
     @State private var title: String = ""
     @State private var selectedPriority: Priority = .medium
     //
     //   @State private var isEditing: EditMode = .inactive
     //
 
-    @FetchRequest(entity: Task.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \Task.priorityID, ascending: false), NSSortDescriptor(keyPath: \Task.title, ascending: false)])
-    var allTasks: FetchedResults<Task>
-
     private var activeTodo: [Task] {
-        allTasks.filter { $0.completed == false && $0.isFavorite == false }
+        allTasks
+            .filter { $0.completed == false && $0.isFavorite == false }
+//            .sorted { $0.priorityID < $1.priorityID }
+//            .sorted { $0.dateCreated ?? Date() < $1.dateCreated ?? Date() }
+
     }
 
     private var completedTodo: [Task] {
-        allTasks.filter { $0.completed == true }
+        allTasks
+            .filter { $0.completed == true }
+//            .sorted { $0.priorityID < $1.priorityID }
+//            .sorted { $0.dateCreated ?? Date() < $1.dateCreated ?? Date() }
     }
 
     private var focusTodo: [Task] {
-        allTasks.filter { $0.isFavorite == true }
+        allTasks
+            .filter { $0.isFavorite == true }
     }
 
     private var todoIsValid: Bool {
@@ -40,20 +54,10 @@ struct ContentView: View {
         return todoIsValid ? .accentColor : .secondary
     }
 
-    let coreDataManager = CoreDataManager.shared
-
-    //    init() {
-    //        UISegmentedControl.appearance().setTitleTextAttributes([.foregroundColor : UIColor(Color.accentColor)], for: .selected)
-    //        UISegmentedControl.appearance().setTitleTextAttributes([.foregroundColor : UIColor.blue], for: .normal)
-    //        UISegmentedControl.appearance().selectedSegmentTintColor = .blue
-    //        UISegmentedControl.appearance().backgroundColor = .yellow
-
-    //    }
-
-
     var body: some View {
         NavigationView {
             VStack {
+                // add new todo...
                 Group {
                     TextField("Enter task", text: $title)
                         .textFieldStyle(.roundedBorder)
@@ -97,7 +101,8 @@ struct ContentView: View {
                             Spacer()
                             Text("\(focusTodo.count) Focus Tasks")
                                 .font(.footnote)
-                            .foregroundColor(.secondary)                        }
+                            .foregroundColor(.secondary)
+                        }
                     }
                     .accentColor(.pink)
 
@@ -108,7 +113,7 @@ struct ContentView: View {
                         .onDelete(perform: deleteTask)
                     } header: {
                         Label("To Do", systemImage: "checkmark.circle")
-                            .foregroundColor(.cyan)
+                            .foregroundColor(.blue)
                     } footer: {
                         HStack {
                             Spacer()
@@ -117,7 +122,7 @@ struct ContentView: View {
                                 .foregroundColor(.secondary)
                         }
                     }
-                    .accentColor(.cyan)
+                    .accentColor(.blue)
 
                     Section {
                         ForEach(completedTodo) { task in
@@ -187,10 +192,10 @@ struct ContentView: View {
     }
 }
 
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        let context = CoreDataManager.shared.container.viewContext
-        ContentView()
-            .environment(\.managedObjectContext, context)
-    }
-}
+//struct ContentView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        let context = CoreDataManager.container.viewContext
+//        ContentView()
+//            .environment(\.managedObjectContext, context)
+//    }
+//}

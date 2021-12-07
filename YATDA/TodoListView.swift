@@ -18,7 +18,6 @@ struct TodoListView: View {
                 .frame(width: 15, height: 15)
             Spacer().frame(width: 12)
             TextField("", text: $task.title ?? "")
-            //            Text(task.title ?? "")
             Spacer()
             Image(systemName: task.isFavorite ? "target": "scope")
                 .foregroundColor(.red)

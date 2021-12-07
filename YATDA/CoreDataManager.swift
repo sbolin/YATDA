@@ -12,23 +12,25 @@ class CoreDataManager {
     // Singleton for whole app to use
     static let shared = CoreDataManager()
 
-    static let preview: CoreDataManager = {
-        let result = CoreDataManager(inMemory: true)
-        Task.makePreview()
-        return result
-    }()
+//    static let preview: CoreDataManager = {
+//        let result = CoreDataManager(inMemory: true)
+//        Task.makePreview()
+//        return result
+//    }()
 
     private let inMemory: Bool
-
     private init(inMemory: Bool = false) {
         self.inMemory = inMemory
     }
 
     lazy var container: NSPersistentContainer = {
         let container = NSPersistentContainer(name: "SimpleTodoModel")
-        guard let description = container.persistentStoreDescriptions.first else {
+
+        guard let description = container.persistentStoreDescriptions.first else
+        {
             fatalError("Failed to retrieve a persistent store description")
         }
+
         if inMemory {
             description.url = URL(fileURLWithPath: "/dev/null")
         }
@@ -49,12 +51,12 @@ class CoreDataManager {
         }
         // This sample refreshes UI by consuming store changes via persistent history tracking.
         /// - Tag: viewContextMergeParentChanges
-        container.viewContext.automaticallyMergesChangesFromParent = false
-        container.viewContext.name = "viewContext"
-        /// - Tag: viewContextMergePolicy
-        container.viewContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
-        container.viewContext.undoManager = nil
-        container.viewContext.shouldDeleteInaccessibleFaults = true
+//        container.viewContext.automaticallyMergesChangesFromParent = false
+//        container.viewContext.name = "viewContext"
+//        /// - Tag: viewContextMergePolicy
+//        container.viewContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+//        container.viewContext.undoManager = nil
+//        container.viewContext.shouldDeleteInaccessibleFaults = true
         return container
     }()
 

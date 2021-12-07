@@ -7,23 +7,23 @@
 
 import Foundation
 
-extension Task {
-
-    @discardableResult
-    static func makePreview() -> [Task] {
-        var tasks = [Task]()
-        let viewContext = CoreDataManager.preview.container.viewContext
-        let newTask = Task(context: viewContext)
-        newTask.title = "Trial Task"
-        //
-        newTask.id = UUID()
-        newTask.priority = "Medium"
-        newTask.priorityID = 1
-        //
-        newTask.completed = false
-        newTask.isFavorite = true
-        newTask.dateCreated = Date()
-        tasks.append(newTask)
-        return tasks
-    }
-}
+//extension Task {
+//
+//    @discardableResult
+//    static func makePreview() -> [Task] {
+//        var tasks = [Task]()
+//        let viewContext = CoreDataManager.preview.container.viewContext
+//        let newTask = Task(context: viewContext)
+//        newTask.title = "Trial Task"
+//        //
+//        newTask.id = UUID()
+//        newTask.priority = "Medium"
+//        newTask.priorityID = 1
+//        //
+//        newTask.completed = false
+//        newTask.isFavorite = true
+//        newTask.dateCreated = Date()
+//        tasks.append(newTask)
+//        return tasks
+//    }
+//}

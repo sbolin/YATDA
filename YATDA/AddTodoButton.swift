@@ -27,7 +27,8 @@ struct AddTodoButton: View {
 }
 
 //struct AddTodoButton_Previews: PreviewProvider {
+//    let closure: () -> ()
 //    static var previews: some View {
-//        AddTodoButton()
+//        AddTodoButton(action: closure, isDisabled: false)
 //    }
 //}
