@@ -13,7 +13,7 @@ struct ContentView: View {
 
     @FetchRequest<Task>(
         sortDescriptors: [
-            SortDescriptor(\Task.priorityID, order: .forward),
+            SortDescriptor(\Task.priorityID, order: .reverse),
             SortDescriptor(\Task.dateCreated, order: .reverse)
         ],
         animation: .default)
@@ -62,10 +62,10 @@ struct ContentView: View {
                     TextField("Enter task", text: $title)
                         .textFieldStyle(.roundedBorder)
                         .focused($taskIsFocused)
+                    
                     Picker("Priority", selection: $selectedPriority) {
                         ForEach(Priority.allCases) { priority in
                             Text(priority.title).tag(priority)
-
                         }
                     }
                     .colorMultiply(Priority.styleForPriority(selectedPriority.rawValue))
@@ -142,9 +142,7 @@ struct ContentView: View {
                     }
                     .accentColor(.green)
                 }
-                //                .listStyle(.grouped)
             }
-            //            .navigationTitle("YATDA")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .principal) {
@@ -162,6 +160,7 @@ struct ContentView: View {
             }
             //            .environment(\.editMode, $isEditing)
         }
+        .environment(\.defaultMinListHeaderHeight, 40)
     }
 
     private func saveTask() {
@@ -178,15 +177,23 @@ struct ContentView: View {
             task.priorityID = 2
         }
         task.dateCreated = Date()
+        // for now...
+        task.dateDue = Date().addingTimeInterval(60 * 60 * 24) // + 1 day
         task.completed = false
         coreDataManager.save()
     }
 
     private func deleteTask(at offsets: IndexSet) {
         withAnimation {
-            offsets.forEach { offset in
-                let task = allTasks[offset]
-                coreDataManager.deleteTask(task: task)
+            offsets.forEach { index in
+                let task = allTasks[index]
+                viewContext.delete(task)
+                do {
+                    try viewContext.save()
+                } catch {
+                    print("Error saving core data \(error.localizedDescription)")
+                }
+//                coreDataManager.deleteTask(task: task, context: viewContext)
             }
         }
     }

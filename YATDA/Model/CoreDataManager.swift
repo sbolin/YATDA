@@ -49,14 +49,6 @@ class CoreDataManager {
                 fatalError("Unresolved error \(error), \(error.userInfo)")
             }
         }
-        // This sample refreshes UI by consuming store changes via persistent history tracking.
-        /// - Tag: viewContextMergeParentChanges
-//        container.viewContext.automaticallyMergesChangesFromParent = false
-//        container.viewContext.name = "viewContext"
-//        /// - Tag: viewContextMergePolicy
-//        container.viewContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
-//        container.viewContext.undoManager = nil
-//        container.viewContext.shouldDeleteInaccessibleFaults = true
         return container
     }()
 
@@ -73,8 +65,9 @@ class CoreDataManager {
         }
     }
 
-    func deleteTask(task: Task) {
-        CoreDataManager.shared.container.viewContext.delete(task)
+    func deleteTask(task: Task, context: NSManagedObjectContext) {
+        context.delete(task)
+//        CoreDataManager.shared.container.viewContext.delete(task)
         save()
     }
 }

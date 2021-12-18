@@ -8,9 +8,10 @@
 import SwiftUI
 
 enum Priority: String, Identifiable, CaseIterable {
-    var id: UUID {
-        return UUID()
-    }
+    var id: Priority { self }
+//    var id: UUID {
+//        return UUID()
+//    }
     case low = "Low" // 0
     case medium = "Medium" // 1
     case high = "High" // 2
