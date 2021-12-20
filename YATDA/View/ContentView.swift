@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import WidgetKit
 
 struct ContentView: View {
     @Environment(\.managedObjectContext) private var viewContext
@@ -29,16 +30,11 @@ struct ContentView: View {
     private var activeTodo: [Task] {
         allTasks
             .filter { $0.completed == false && $0.isFavorite == false }
-//            .sorted { $0.priorityID < $1.priorityID }
-//            .sorted { $0.dateCreated ?? Date() < $1.dateCreated ?? Date() }
-
     }
 
     private var completedTodo: [Task] {
         allTasks
             .filter { $0.completed == true }
-//            .sorted { $0.priorityID < $1.priorityID }
-//            .sorted { $0.dateCreated ?? Date() < $1.dateCreated ?? Date() }
     }
 
     private var focusTodo: [Task] {
@@ -88,6 +84,7 @@ struct ContentView: View {
                 .padding(.horizontal)
 
                 List {
+                    // Focus Task Section
                     Section {
                         ForEach(focusTodo) { task in
                             TodoListView(task: task)
@@ -106,6 +103,7 @@ struct ContentView: View {
                     }
                     .accentColor(.pink)
 
+                    // Active Task Section
                     Section {
                         ForEach(activeTodo) { task in
                             TodoListView(task: task)
@@ -124,6 +122,7 @@ struct ContentView: View {
                     }
                     .accentColor(.blue)
 
+                    // Completed Task Section
                     Section {
                         ForEach(completedTodo) { task in
                             TodoListView(task: task)
@@ -181,6 +180,7 @@ struct ContentView: View {
         task.dateDue = Date().addingTimeInterval(60 * 60 * 24) // + 1 day
         task.completed = false
         coreDataManager.save()
+        WidgetCenter.shared.reloadAllTimelines()
     }
 
     private func deleteTask(at offsets: IndexSet) {

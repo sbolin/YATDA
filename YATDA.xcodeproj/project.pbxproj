@@ -10,8 +10,16 @@
 		15086CCB2770482B00047EDD /* Font+Rounded.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15086CCA2770482B00047EDD /* Font+Rounded.swift */; };
 		15086CCD27704B9E00047EDD /* HighlightTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15086CCC27704B9E00047EDD /* HighlightTextField.swift */; };
 		15086CCF27705E4900047EDD /* Date+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15086CCE27705E4900047EDD /* Date+Ext.swift */; };
+		15086CD72770750A00047EDD /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 15086CD62770750A00047EDD /* WidgetKit.framework */; };
+		15086CD92770750A00047EDD /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 15086CD82770750A00047EDD /* SwiftUI.framework */; };
+		15086CDC2770750A00047EDD /* YATDAWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15086CDB2770750A00047EDD /* YATDAWidget.swift */; };
+		15086CDE2770750C00047EDD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 15086CDD2770750C00047EDD /* Assets.xcassets */; };
+		15086CE22770750D00047EDD /* YATDAWidgetExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 15086CD42770750A00047EDD /* YATDAWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		15086CE82770754600047EDD /* SimpleTodoModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 15A0F9102721E1E7000B652A /* SimpleTodoModel.xcdatamodeld */; };
+		15086CE92770754D00047EDD /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A0F9132721E287000B652A /* CoreDataManager.swift */; };
+		15086CEA2770754D00047EDD /* Priority.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A0F9332722C2CA000B652A /* Priority.swift */; };
+		15086CEB2770755A00047EDD /* Date+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15086CCE27705E4900047EDD /* Date+Ext.swift */; };
 		1528213527269EC3009CD0A8 /* AddTodoButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1528213427269EC3009CD0A8 /* AddTodoButton.swift */; };
-		157569C62725FE6F001B387D /* Task+Ext.swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 157569C52725FE6F001B387D /* Task+Ext.swift.swift */; };
 		15A0F9032721E07D000B652A /* YATDAApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A0F9022721E07D000B652A /* YATDAApp.swift */; };
 		15A0F9052721E07D000B652A /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A0F9042721E07D000B652A /* ContentView.swift */; };
 		15A0F9072721E07F000B652A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 15A0F9062721E07F000B652A /* Assets.xcassets */; };
@@ -22,13 +30,44 @@
 		15A0F9362722C6EF000B652A /* TodoListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A0F9352722C6EF000B652A /* TodoListView.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		15086CE02770750D00047EDD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 15A0F8F72721E07D000B652A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 15086CD32770750A00047EDD;
+			remoteInfo = YATDAWidgetExtension;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		15086CE62770750D00047EDD /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				15086CE22770750D00047EDD /* YATDAWidgetExtension.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		15086CCA2770482B00047EDD /* Font+Rounded.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Font+Rounded.swift"; sourceTree = "<group>"; };
 		15086CCC27704B9E00047EDD /* HighlightTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HighlightTextField.swift; sourceTree = "<group>"; };
 		15086CCE27705E4900047EDD /* Date+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Ext.swift"; sourceTree = "<group>"; };
+		15086CD42770750A00047EDD /* YATDAWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = YATDAWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		15086CD62770750A00047EDD /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		15086CD82770750A00047EDD /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		15086CDB2770750A00047EDD /* YATDAWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YATDAWidget.swift; sourceTree = "<group>"; };
+		15086CDD2770750C00047EDD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		15086CDF2770750C00047EDD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		15086CED2770758900047EDD /* YATDA.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = YATDA.entitlements; sourceTree = "<group>"; };
+		15086CEE277075D100047EDD /* YATDAWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = YATDAWidgetExtension.entitlements; sourceTree = "<group>"; };
 		1528213427269EC3009CD0A8 /* AddTodoButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTodoButton.swift; sourceTree = "<group>"; };
 		157569C42725EFD4001B387D /* ToDo.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = ToDo.md; sourceTree = "<group>"; };
-		157569C52725FE6F001B387D /* Task+Ext.swift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Task+Ext.swift.swift"; sourceTree = "<group>"; };
 		15A0F8FF2721E07D000B652A /* YATDA.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = YATDA.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		15A0F9022721E07D000B652A /* YATDAApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YATDAApp.swift; sourceTree = "<group>"; };
 		15A0F9042721E07D000B652A /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -41,6 +80,15 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		15086CD12770750A00047EDD /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				15086CD92770750A00047EDD /* SwiftUI.framework in Frameworks */,
+				15086CD72770750A00047EDD /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		15A0F8FC2721E07D000B652A /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -61,12 +109,30 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
+		15086CD52770750A00047EDD /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				15086CD62770750A00047EDD /* WidgetKit.framework */,
+				15086CD82770750A00047EDD /* SwiftUI.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		15086CDA2770750A00047EDD /* YATDAWidget */ = {
+			isa = PBXGroup;
+			children = (
+				15086CDB2770750A00047EDD /* YATDAWidget.swift */,
+				15086CDD2770750C00047EDD /* Assets.xcassets */,
+				15086CDF2770750C00047EDD /* Info.plist */,
+			);
+			path = YATDAWidget;
+			sourceTree = "<group>";
+		};
 		151E126D276143E30057414F /* Model */ = {
 			isa = PBXGroup;
 			children = (
 				15A0F9332722C2CA000B652A /* Priority.swift */,
 				15A0F9132721E287000B652A /* CoreDataManager.swift */,
-				157569C52725FE6F001B387D /* Task+Ext.swift.swift */,
 				15A0F9102721E1E7000B652A /* SimpleTodoModel.xcdatamodeld */,
 			);
 			path = Model;
@@ -85,7 +151,11 @@
 		15A0F8F62721E07D000B652A = {
 			isa = PBXGroup;
 			children = (
+				15086CEE277075D100047EDD /* YATDAWidgetExtension.entitlements */,
 				15A0F9012721E07D000B652A /* YATDA */,
+				15086CDA2770750A00047EDD /* YATDAWidget */,
+				157569C42725EFD4001B387D /* ToDo.md */,
+				15086CD52770750A00047EDD /* Frameworks */,
 				15A0F9002721E07D000B652A /* Products */,
 			);
 			sourceTree = "<group>";
@@ -94,6 +164,7 @@
 			isa = PBXGroup;
 			children = (
 				15A0F8FF2721E07D000B652A /* YATDA.app */,
+				15086CD42770750A00047EDD /* YATDAWidgetExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -101,11 +172,11 @@
 		15A0F9012721E07D000B652A /* YATDA */ = {
 			isa = PBXGroup;
 			children = (
+				15086CED2770758900047EDD /* YATDA.entitlements */,
 				15A0F9022721E07D000B652A /* YATDAApp.swift */,
 				151E126E276143EF0057414F /* View */,
 				151E126D276143E30057414F /* Model */,
 				15086CC9277047F400047EDD /* Extensions */,
-				157569C42725EFD4001B387D /* ToDo.md */,
 				15A0F9062721E07F000B652A /* Assets.xcassets */,
 				15A0F9082721E07F000B652A /* Preview Content */,
 			);
@@ -123,6 +194,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		15086CD32770750A00047EDD /* YATDAWidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 15086CE32770750D00047EDD /* Build configuration list for PBXNativeTarget "YATDAWidgetExtension" */;
+			buildPhases = (
+				15086CD02770750A00047EDD /* Sources */,
+				15086CD12770750A00047EDD /* Frameworks */,
+				15086CD22770750A00047EDD /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = YATDAWidgetExtension;
+			productName = YATDAWidgetExtension;
+			productReference = 15086CD42770750A00047EDD /* YATDAWidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		15A0F8FE2721E07D000B652A /* YATDA */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 15A0F90D2721E07F000B652A /* Build configuration list for PBXNativeTarget "YATDA" */;
@@ -130,10 +218,12 @@
 				15A0F8FB2721E07D000B652A /* Sources */,
 				15A0F8FC2721E07D000B652A /* Frameworks */,
 				15A0F8FD2721E07D000B652A /* Resources */,
+				15086CE62770750D00047EDD /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				15086CE12770750D00047EDD /* PBXTargetDependency */,
 			);
 			name = YATDA;
 			productName = YATDA;
@@ -147,9 +237,12 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1310;
+				LastSwiftUpdateCheck = 1320;
 				LastUpgradeCheck = 1310;
 				TargetAttributes = {
+					15086CD32770750A00047EDD = {
+						CreatedOnToolsVersion = 13.2;
+					};
 					15A0F8FE2721E07D000B652A = {
 						CreatedOnToolsVersion = 13.1;
 					};
@@ -169,11 +262,20 @@
 			projectRoot = "";
 			targets = (
 				15A0F8FE2721E07D000B652A /* YATDA */,
+				15086CD32770750A00047EDD /* YATDAWidgetExtension */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		15086CD22770750A00047EDD /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				15086CDE2770750C00047EDD /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		15A0F8FD2721E07D000B652A /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -186,6 +288,18 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		15086CD02770750A00047EDD /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				15086CE82770754600047EDD /* SimpleTodoModel.xcdatamodeld in Sources */,
+				15086CE92770754D00047EDD /* CoreDataManager.swift in Sources */,
+				15086CEB2770755A00047EDD /* Date+Ext.swift in Sources */,
+				15086CEA2770754D00047EDD /* Priority.swift in Sources */,
+				15086CDC2770750A00047EDD /* YATDAWidget.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		15A0F8FB2721E07D000B652A /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -200,13 +314,78 @@
 				15A0F9342722C2CA000B652A /* Priority.swift in Sources */,
 				15086CCB2770482B00047EDD /* Font+Rounded.swift in Sources */,
 				15A0F9032721E07D000B652A /* YATDAApp.swift in Sources */,
-				157569C62725FE6F001B387D /* Task+Ext.swift.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		15086CE12770750D00047EDD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 15086CD32770750A00047EDD /* YATDAWidgetExtension */;
+			targetProxy = 15086CE02770750D00047EDD /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		15086CE42770750D00047EDD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = YATDAWidgetExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = QTCBMWZUKD;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = YATDAWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = YATDAWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = io.tukgaesoft.YATDA.YATDAWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		15086CE52770750D00047EDD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = YATDAWidgetExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = QTCBMWZUKD;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = YATDAWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = YATDAWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = io.tukgaesoft.YATDA.YATDAWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		15A0F90B2721E07F000B652A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -326,8 +505,10 @@
 		15A0F90E2721E07F000B652A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = YATDA/YATDA.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"YATDA/Preview Content\"";
@@ -355,8 +536,10 @@
 		15A0F90F2721E07F000B652A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = YATDA/YATDA.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"YATDA/Preview Content\"";
@@ -384,6 +567,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		15086CE32770750D00047EDD /* Build configuration list for PBXNativeTarget "YATDAWidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				15086CE42770750D00047EDD /* Debug */,
+				15086CE52770750D00047EDD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		15A0F8FA2721E07D000B652A /* Build configuration list for PBXProject "YATDA" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

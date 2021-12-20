@@ -7,16 +7,11 @@
 
 import Foundation
 import CoreData
+import WidgetKit
 
 class CoreDataManager {
     // Singleton for whole app to use
     static let shared = CoreDataManager()
-
-//    static let preview: CoreDataManager = {
-//        let result = CoreDataManager(inMemory: true)
-//        Task.makePreview()
-//        return result
-//    }()
 
     private let inMemory: Bool
     private init(inMemory: Bool = false) {
@@ -24,8 +19,12 @@ class CoreDataManager {
     }
 
     lazy var container: NSPersistentContainer = {
-        let container = NSPersistentContainer(name: "SimpleTodoModel")
+        let containerURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.io.tukgaesoft.YATDA")!.appendingPathComponent("SimpleTodoModel.sqlite")
 
+        let container = NSPersistentContainer(name: "SimpleTodoModel")
+        container.persistentStoreDescriptions = [NSPersistentStoreDescription(url: containerURL)]
+
+        /// Not sure if below works or is needed...
         guard let description = container.persistentStoreDescriptions.first else
         {
             fatalError("Failed to retrieve a persistent store description")
@@ -43,6 +42,7 @@ class CoreDataManager {
         /// - Tag: persistentHistoryTracking
         description.setOption(true as NSNumber,
                               forKey: NSPersistentHistoryTrackingKey)
+        /// end not sure zone...
 
         container.loadPersistentStores { storeDescription, error in
             if let error = error as NSError? {
@@ -58,6 +58,7 @@ class CoreDataManager {
         if context.hasChanges {
             do {
                 try context.save()
+                WidgetCenter.shared.reloadAllTimelines()
             } catch {
                 // throw error
                 print("Could not save, \(error.localizedDescription)")

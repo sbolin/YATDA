@@ -67,7 +67,7 @@ struct TodoListView: View {
                     task.priorityID = 1
                 }
             }
-            VStack {
+            VStack(alignment: .leading) {
                 TextField("", text: $task.title ?? "")
                     .submitLabel(SubmitLabel.done)
                     .onReceive(NotificationCenter.default.publisher(for: UITextField.textDidBeginEditingNotification)) { obj in
