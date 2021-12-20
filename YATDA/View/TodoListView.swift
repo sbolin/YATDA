@@ -17,11 +17,15 @@ struct TodoListView: View {
         self.selectedPriority = Priority(rawValue: task.priority ?? "Medium") ?? .medium
     }
 
+    var formattedDueDate: String {
+        guard let dueDate = task.dateDue else { return "" }
+        return dueDate.formattedRelativeToday()
+    }
+
 
     var body: some View {
 
-        HStack(spacing: 0) {
-
+        HStack(alignment: .top ,spacing: 0) {
             Menu {
                 Picker(selection: $selectedPriority, label: Text("")) {
                     ForEach(Priority.allCases) { priority in
@@ -63,7 +67,24 @@ struct TodoListView: View {
                     task.priorityID = 1
                 }
             }
-            TextField("", text: $task.title ?? "")
+            VStack {
+                TextField("", text: $task.title ?? "")
+                    .submitLabel(SubmitLabel.done)
+                    .onReceive(NotificationCenter.default.publisher(for: UITextField.textDidBeginEditingNotification)) { obj in
+                        if let textField = obj.object as? UITextField {
+                            textField.selectedTextRange = textField.textRange(from: textField.beginningOfDocument, to: textField.endOfDocument)
+                        }
+                }
+                if let dueDate = task.dateDue {
+                    Text(dueDate.formattedRelativeToday())
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                } else {
+                    Text(Date().formattedRelativeToday())
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                }
+            } // VStack
             Spacer()
             Image(systemName: task.isFavorite ? "target": "scope")
                 .foregroundColor(.red)
@@ -80,7 +101,7 @@ struct TodoListView: View {
                         updateCompletion()
                     }
                 }
-        }
+        } // HStack
     }
 
     /// Helper function to unwrap optional binding

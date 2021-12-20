@@ -187,13 +187,7 @@ struct ContentView: View {
         withAnimation {
             offsets.forEach { index in
                 let task = allTasks[index]
-                viewContext.delete(task)
-                do {
-                    try viewContext.save()
-                } catch {
-                    print("Error saving core data \(error.localizedDescription)")
-                }
-//                coreDataManager.deleteTask(task: task, context: viewContext)
+                coreDataManager.deleteTask(task: task, context: viewContext)
             }
         }
     }

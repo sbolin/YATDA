@@ -1,6 +1,5 @@
 #  YATDA
 ## Things to do:
+- Widget with Focus item shown.
 - Detail task view - edit all attributes + due date
-- If not detail task view, expand TodoListView to include added info
-- Due date (in Core Data model already, but not user settable)
-- Widget with Focus item shown
+- "Simple entry" - like Rminders app, when entering todo hit return and new todo is automatically created

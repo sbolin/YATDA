@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		15086CCB2770482B00047EDD /* Font+Rounded.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15086CCA2770482B00047EDD /* Font+Rounded.swift */; };
+		15086CCD27704B9E00047EDD /* HighlightTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15086CCC27704B9E00047EDD /* HighlightTextField.swift */; };
+		15086CCF27705E4900047EDD /* Date+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15086CCE27705E4900047EDD /* Date+Ext.swift */; };
 		1528213527269EC3009CD0A8 /* AddTodoButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1528213427269EC3009CD0A8 /* AddTodoButton.swift */; };
 		157569C62725FE6F001B387D /* Task+Ext.swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 157569C52725FE6F001B387D /* Task+Ext.swift.swift */; };
 		15A0F9032721E07D000B652A /* YATDAApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A0F9022721E07D000B652A /* YATDAApp.swift */; };
@@ -20,6 +23,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		15086CCA2770482B00047EDD /* Font+Rounded.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Font+Rounded.swift"; sourceTree = "<group>"; };
+		15086CCC27704B9E00047EDD /* HighlightTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HighlightTextField.swift; sourceTree = "<group>"; };
+		15086CCE27705E4900047EDD /* Date+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Ext.swift"; sourceTree = "<group>"; };
 		1528213427269EC3009CD0A8 /* AddTodoButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTodoButton.swift; sourceTree = "<group>"; };
 		157569C42725EFD4001B387D /* ToDo.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = ToDo.md; sourceTree = "<group>"; };
 		157569C52725FE6F001B387D /* Task+Ext.swift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Task+Ext.swift.swift"; sourceTree = "<group>"; };
@@ -45,6 +51,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		15086CC9277047F400047EDD /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				15086CCA2770482B00047EDD /* Font+Rounded.swift */,
+				15086CCC27704B9E00047EDD /* HighlightTextField.swift */,
+				15086CCE27705E4900047EDD /* Date+Ext.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		151E126D276143E30057414F /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -88,6 +104,7 @@
 				15A0F9022721E07D000B652A /* YATDAApp.swift */,
 				151E126E276143EF0057414F /* View */,
 				151E126D276143E30057414F /* Model */,
+				15086CC9277047F400047EDD /* Extensions */,
 				157569C42725EFD4001B387D /* ToDo.md */,
 				15A0F9062721E07F000B652A /* Assets.xcassets */,
 				15A0F9082721E07F000B652A /* Preview Content */,
@@ -173,12 +190,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				15086CCD27704B9E00047EDD /* HighlightTextField.swift in Sources */,
 				15A0F9122721E1E7000B652A /* SimpleTodoModel.xcdatamodeld in Sources */,
 				1528213527269EC3009CD0A8 /* AddTodoButton.swift in Sources */,
 				15A0F9052721E07D000B652A /* ContentView.swift in Sources */,
 				15A0F9362722C6EF000B652A /* TodoListView.swift in Sources */,
 				15A0F9142721E287000B652A /* CoreDataManager.swift in Sources */,
+				15086CCF27705E4900047EDD /* Date+Ext.swift in Sources */,
 				15A0F9342722C2CA000B652A /* Priority.swift in Sources */,
+				15086CCB2770482B00047EDD /* Font+Rounded.swift in Sources */,
 				15A0F9032721E07D000B652A /* YATDAApp.swift in Sources */,
 				157569C62725FE6F001B387D /* Task+Ext.swift.swift in Sources */,
 			);
