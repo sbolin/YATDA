@@ -16,6 +16,14 @@ extension UIFontDescriptor {
         UIFontDescriptor.preferredFontDescriptor(withTextStyle: .largeTitle).withSymbolicTraits(.traitBold)
     }
 
+    static func regularTitle() -> UIFontDescriptor? {
+        UIFontDescriptor.preferredFontDescriptor(withTextStyle: .title1).withSymbolicTraits(.traitBold)
+    }
+
+    static func body() -> UIFontDescriptor? {
+        UIFontDescriptor.preferredFontDescriptor(withTextStyle: .body).withSymbolicTraits(.traitUIOptimized)
+    }
+
     static func headline() -> UIFontDescriptor? {
         UIFontDescriptor.preferredFontDescriptor(withTextStyle: .headline).withSymbolicTraits(.traitBold)
     }
@@ -32,8 +40,18 @@ extension UIFont {
         return UIFont(descriptor: descriptor, size: 0)
     }
 
+    static func roundedTitle() -> UIFont? {
+        guard let descriptor = UIFontDescriptor.regularTitle()?.rounded() else { return nil }
+        return UIFont(descriptor: descriptor, size: 0)
+    }
+
     static func roundedHeadline() -> UIFont? {
         guard let descriptor = UIFontDescriptor.headline()?.rounded() else { return nil }
+        return UIFont(descriptor: descriptor, size: 0)
+    }
+
+    static func roundedBody() -> UIFont? {
+        guard let descriptor = UIFontDescriptor.body()?.rounded() else { return nil }
         return UIFont(descriptor: descriptor, size: 0)
     }
 }

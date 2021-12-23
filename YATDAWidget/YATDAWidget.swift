@@ -10,67 +10,89 @@ import WidgetKit
 import SwiftUI
 
 struct Provider: TimelineProvider {
-    var moc = CoreDataManager.shared.container.viewContext
+
+    let snapshotEntry = SimpleEntry(date: Date(), titleString: "A Focus Task", priority: .medium, dueDate: Date())
 
     func placeholder(in context: Context) -> SimpleEntry {
-        SimpleEntry(date: Date(), focusTodo: [Task]())
+        return snapshotEntry
     }
 
     func getSnapshot(in context: Context, completion: @escaping (SimpleEntry) -> ()) {
-        let entry = SimpleEntry(date: Date(), focusTodo: [Task]())
-        return completion(entry)
+        return completion(snapshotEntry)
     }
 
     func getTimeline(in context: Context, completion: @escaping (Timeline<Entry>) -> ()) {
         var entries: [SimpleEntry] = []
+
         // get core data
         let moc = CoreDataManager.shared.container.viewContext
-        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Task")
-        var results = [Task]()
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "TaskEntity")
+        var results = [TaskEntity]()
 
         do {
-            results = try moc.fetch(request) as! [Task]
+            results = try moc.fetch(request) as! [TaskEntity]
         } catch {
-            print("Could not fetch task for widget \(error.localizedDescription)")
+            print("Could not fetch \(error.localizedDescription)")
         }
 
-        var focusTodo: [Task] {
-            results
-                .filter { $0.isFavorite == true }
-        }
+        let focusItems = results.filter { $0.focused == true }
 
-        let entry = SimpleEntry(date: .now, focusTodo: focusTodo)
+        let titleString = focusItems.first?.title ?? "No Focus Item"
+        let priorityString = focusItems.first?.priority ?? "Non"
+        let dueDate = focusItems.first?.dateDue ?? Date()
+
+        let entry = SimpleEntry(date: Date(), titleString: titleString, priority: Priority(rawValue: priorityString) ?? .non, dueDate: dueDate)
         entries.append(entry)
 
-
-        let timeline = Timeline(entries: entries, policy: .atEnd)
+        let timeline = Timeline(entries: entries, policy: .never)
         completion(timeline)
     }
 }
 
 struct SimpleEntry: TimelineEntry {
     let date: Date
-    let focusTodo: [Task]
+    let titleString: String
+    let priority: Priority
+    let dueDate: Date
 }
 
 struct YATDAWidgetEntryView : View {
     var entry: Provider.Entry
-
-
     var body: some View {
-        ForEach(entry.focusTodo) { task in
-            HStack(alignment: .top) {
-                Circle()
-                    .fill(Priority.styleForPriority(task.priority ?? "Medium"))
-                    .frame(width: 12, height: 12)
-                VStack(alignment: .leading, spacing: 6) {
-                    Text(task.title ?? "")
-                    Text(task.dateDue ?? Date(), format: .dateTime)
+        //        ForEach(focusTodo) { task in
+        let titleString = entry.titleString // task.title ?? "No Current Task"
+        let dueDate = entry.dueDate // task.dateDue?.formatted(date: .abbreviated, time: .omitted) ?? ""
+        let priorityString = entry.priority.rawValue // task.priority
+        ZStack {
+            Color(.systemMint)
+            VStack(alignment: .leading, spacing: 0) {
+                Text("FOCUS ITEM:")
+                    .font(.caption2).bold()
+                    .foregroundColor(.pink)
+                    .padding(2)
+                Divider()
+                    .padding(.bottom, 4)
+                HStack(alignment: .firstTextBaseline, spacing: 4) {
+                    Circle()
+                        .fill(Priority.styleForPriority(priorityString))
+                        .frame(width: 10, height: 10)
+                    VStack(alignment: .leading, spacing: 6) {
+                        Text(titleString)
+                            .font(.title3)
+                            .minimumScaleFactor(0.6)
+                            .foregroundColor(.indigo)
+                        Text("Due \(dueDate.formatted(.relative(presentation: .numeric)))")
+                            .font(.caption2)
+                            .foregroundColor(.gray)
+                    }
                 }
-            }
-            .background(Color.gray)
-//            .environment(\.managedObjectContext, CoreDataManager.shared.container.viewContext)
+                Spacer(minLength: 0)
+            } // VStack
+            .padding(6)
+            .background(ContainerRelativeShape().fill(.white))
+            .padding(8)
         }
+        //        } // ForEach
     }
 }
 
@@ -81,7 +103,7 @@ struct YATDAWidget: Widget {
     var body: some WidgetConfiguration {
         StaticConfiguration(kind: kind, provider: Provider()) { entry in
             YATDAWidgetEntryView(entry: entry)
-//                .environment(\.managedObjectContext, CoreDataManager.shared.container.viewContext)
+                .environment(\.managedObjectContext, CoreDataManager.shared.context)
         }
         .configurationDisplayName("YATDA Focus")
         .description("Current Focus Task")
@@ -92,9 +114,16 @@ struct YATDAWidget: Widget {
 struct YATDAWidget_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            YATDAWidgetEntryView(entry: SimpleEntry(date: Date(), focusTodo: [Task]()))
+            YATDAWidgetEntryView(entry: SimpleEntry(date: Date(), titleString: "A Pretty Long Medium Priority Task", priority: .medium, dueDate: Date().addingTimeInterval(60 * 60 * 24)))
                 .previewContext(WidgetPreviewContext(family: .systemSmall))
-            YATDAWidgetEntryView(entry: SimpleEntry(date: Date(), focusTodo: [Task]()))
+
+            YATDAWidgetEntryView(entry: SimpleEntry(date: Date(), titleString: "A No Priority Task", priority: .non, dueDate: Date().addingTimeInterval(60 * 60 * 24 * 7)))
+                .previewContext(WidgetPreviewContext(family: .systemSmall))
+
+            YATDAWidgetEntryView(entry: SimpleEntry(date: Date(), titleString: "A Short Task", priority: .high, dueDate: Date().addingTimeInterval(60 * 60 * 24 * 3)))
+                .previewContext(WidgetPreviewContext(family: .systemMedium))
+
+            YATDAWidgetEntryView(entry: SimpleEntry(date: Date(), titleString: "A Low Priority Task", priority: .low, dueDate: Date().addingTimeInterval(60 * 60 * 24 * 1)))
                 .previewContext(WidgetPreviewContext(family: .systemMedium))
         }
     }

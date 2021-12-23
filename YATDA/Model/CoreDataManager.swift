@@ -24,6 +24,7 @@ class CoreDataManager {
         let container = NSPersistentContainer(name: "SimpleTodoModel")
         container.persistentStoreDescriptions = [NSPersistentStoreDescription(url: containerURL)]
 
+/*
         /// Not sure if below works or is needed...
         guard let description = container.persistentStoreDescriptions.first else
         {
@@ -43,18 +44,30 @@ class CoreDataManager {
         description.setOption(true as NSNumber,
                               forKey: NSPersistentHistoryTrackingKey)
         /// end not sure zone...
-
+*/
         container.loadPersistentStores { storeDescription, error in
             if let error = error as NSError? {
                 fatalError("Unresolved error \(error), \(error.userInfo)")
             }
         }
+        container.viewContext.automaticallyMergesChangesFromParent = true
+        container.viewContext.mergePolicy = NSMergeByPropertyStoreTrumpMergePolicy
         return container
     }()
 
+    var context: NSManagedObjectContext {
+        return container.viewContext
+    }
+
+    var workingContext: NSManagedObjectContext {
+        let context = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
+        context.parent = context
+        return context
+    }
+
     // utility functions
     func save() {
-        let context = container.viewContext
+//        let context = container.viewContext
         if context.hasChanges {
             do {
                 try context.save()
@@ -66,9 +79,9 @@ class CoreDataManager {
         }
     }
 
-    func deleteTask(task: Task, context: NSManagedObjectContext) {
+    func deleteTask(task: TaskEntity, context: NSManagedObjectContext) {
         context.delete(task)
-//        CoreDataManager.shared.container.viewContext.delete(task)
+//        self.context.delete(task)
         save()
     }
 }

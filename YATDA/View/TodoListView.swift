@@ -9,10 +9,10 @@ import SwiftUI
 
 struct TodoListView: View {
     @Environment(\.managedObjectContext) private var viewContext
-    @ObservedObject var task: Task
+    @ObservedObject var task: TaskEntity
     @State private var selectedPriority: Priority
 
-    init(task: Task) {
+    init(task: TaskEntity) {
         self.task = task
         self.selectedPriority = Priority(rawValue: task.priority ?? "Medium") ?? .medium
     }
@@ -25,7 +25,7 @@ struct TodoListView: View {
 
     var body: some View {
 
-        HStack(alignment: .top ,spacing: 0) {
+        HStack(alignment: .top ,spacing: 4) {
             Menu {
                 Picker(selection: $selectedPriority, label: Text("")) {
                     ForEach(Priority.allCases) { priority in
@@ -35,12 +35,14 @@ struct TodoListView: View {
                 .onChange(of: selectedPriority) { priority in
                     task.priority = priority.rawValue
                     switch priority {
-                    case .low:
+                    case .non:
                         task.priorityID = 0
-                    case .medium:
+                    case .low:
                         task.priorityID = 1
-                    case .high:
+                    case .medium:
                         task.priorityID = 2
+                    case .high:
+                        task.priorityID = 3
                     }
                 }
             } label: {
@@ -49,22 +51,31 @@ struct TodoListView: View {
                 } icon: {
                     Circle()
                         .fill(Priority.styleForPriority(task.priority ?? "Medium"))
-                        .frame(width: 12, height: 12)
+                        .frame(width: 14, height: 14)
+                        .padding(8)
                 }
             } primaryAction: {
                 switch task.priorityID {
                 case 0:
-                    task.priority = Priority.medium.rawValue
                     task.priorityID = 1
-                case 1:
-                    task.priority = Priority.high.rawValue
-                    task.priorityID = 2
-                case 2:
                     task.priority = Priority.low.rawValue
-                    task.priorityID = 0
-                default:
+                    break
+                case 1:
+                    task.priorityID = 2
                     task.priority = Priority.medium.rawValue
-                    task.priorityID = 1
+                    break
+                case 2:
+                    task.priorityID = 3
+                    task.priority = Priority.high.rawValue
+                    break
+                case 3:
+                    task.priorityID = 0
+                    task.priority = Priority.non.rawValue
+                    break
+                default:
+                    task.priorityID = 0
+                    task.priority = Priority.non.rawValue
+                    break
                 }
             }
             VStack(alignment: .leading) {
@@ -86,7 +97,7 @@ struct TodoListView: View {
                 }
             } // VStack
             Spacer()
-            Image(systemName: task.isFavorite ? "target": "scope")
+            Image(systemName: task.focused ? "target": "scope")
                 .foregroundColor(.red)
                 .onTapGesture {
                     withAnimation {
@@ -107,8 +118,8 @@ struct TodoListView: View {
     /// Helper function to unwrap optional binding
     private func updateTask() {
         withAnimation {
-            let oldValue = task.isFavorite
-            task.isFavorite = !oldValue
+            let oldValue = task.focused
+            task.focused = !oldValue
             do {
                 try viewContext.save()
             } catch {
@@ -122,7 +133,7 @@ struct TodoListView: View {
             let oldValue = task.completed
             task.completed = !oldValue
             if !oldValue {
-                task.isFavorite = false
+                task.focused = false
                 task.dateCompleted = Date() // task has been completed
             } else {
                 task.dateCompleted = nil // dateCompleted is reset if completed task is marked as incomplete
