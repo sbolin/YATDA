@@ -67,7 +67,6 @@ class CoreDataManager {
 
     // utility functions
     func save() {
-//        let context = container.viewContext
         if context.hasChanges {
             do {
                 try context.save()

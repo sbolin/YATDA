@@ -58,6 +58,7 @@ struct SimpleEntry: TimelineEntry {
 
 struct YATDAWidgetEntryView : View {
     var entry: Provider.Entry
+
     var body: some View {
         //        ForEach(focusTodo) { task in
         let titleString = entry.titleString // task.title ?? "No Current Task"
