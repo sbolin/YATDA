@@ -160,15 +160,9 @@ struct ContentView: View {
         .environment(\.defaultMinListHeaderHeight, 40)
     } // View
 
-//    private func deleteTask(at offsets: IndexSet) {
-    //    private func deleteTask(at offsets: IndexSet, in: Int) {
     private func deleteTask(task: TaskEntity) {
         withAnimation {
             coreDataManager.deleteTask(task: task, context: viewContext)
-//            offsets.forEach { index in
-//                let task = allTasks[index]
-//                coreDataManager.deleteTask(task: task, context: viewContext)
-//            }
         }
     }
 }
@@ -201,6 +195,7 @@ struct AddTaskView: View {
             TextField("Enter New Task", text: $title)
                 .textFieldStyle(.roundedBorder)
                 .focused($taskIsFocused)
+                .textInputAutocapitalization(.words)
 
             Picker("Priority", selection: $selectedPriority) {
                 ForEach(Priority.allCases) { priority in

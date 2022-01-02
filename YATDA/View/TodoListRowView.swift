@@ -17,12 +17,6 @@ struct TodoListRowView: View {
         self.selectedPriority = Priority(rawValue: task.priority ?? "Medium") ?? .medium
     }
 
-    var formattedDueDate: String {
-        guard let dueDate = task.dateDue else { return "" }
-        return dueDate.formattedRelativeToday()
-    }
-
-
     var body: some View {
 
         HStack(alignment: .top ,spacing: 4) {
@@ -87,20 +81,23 @@ struct TodoListRowView: View {
                         }
                 }
                 HStack {
-                Text("Due: ")
+                    Text("Start: ").bold()
+                    if let createdDate = task.dateCreated {
+                        Text(createdDate.formatted(.dateTime.weekday(.abbreviated)))
+                    }
+
+                    Text("Due: ").bold()
                     if let dueDate = task.dateDue {
                         Text(dueDate.formattedRelativeToday())
-
+//                        Text(dueDate.formatted(.dateTime.weekday(.abbreviated)))
                     } else {
                         Text(Date().formattedRelativeToday())
+//                        Text(Date().formatted(.dateTime.weekday(.abbreviated)))
                     }
                     Spacer()
-                    Text("Created: ")
-                    if let createdDate = task.dateCreated {
-                        Text(createdDate.startOfDay())
-                    }
+
                 } // HStack
-                .font(.caption)
+                .font(.footnote)
                 .foregroundColor(.secondary)
             } // VStack
             Spacer()
