@@ -1,5 +1,5 @@
 //
-//  TodoListView.swift
+//  TodoListRowView.swift
 //  YATDA
 //
 //  Created by Scott Bolin on 22-Oct-21.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct TodoListView: View {
+struct TodoListRowView: View {
     @Environment(\.managedObjectContext) private var viewContext
     @ObservedObject var task: TaskEntity
     @State private var selectedPriority: Priority
@@ -86,15 +86,22 @@ struct TodoListView: View {
                             textField.selectedTextRange = textField.textRange(from: textField.beginningOfDocument, to: textField.endOfDocument)
                         }
                 }
-                if let dueDate = task.dateDue {
-                    Text(dueDate.formattedRelativeToday())
-                        .font(.caption)
-                        .foregroundColor(.secondary)
-                } else {
-                    Text(Date().formattedRelativeToday())
-                        .font(.caption)
-                        .foregroundColor(.secondary)
-                }
+                HStack {
+                Text("Due: ")
+                    if let dueDate = task.dateDue {
+                        Text(dueDate.formattedRelativeToday())
+
+                    } else {
+                        Text(Date().formattedRelativeToday())
+                    }
+                    Spacer()
+                    Text("Created: ")
+                    if let createdDate = task.dateCreated {
+                        Text(createdDate.startOfDay())
+                    }
+                } // HStack
+                .font(.caption)
+                .foregroundColor(.secondary)
             } // VStack
             Spacer()
             Image(systemName: task.focused ? "target": "scope")
@@ -150,7 +157,7 @@ struct TodoListView: View {
 //struct TodoListView_Previews: PreviewProvider {
 //    static var previews: some View {
 //        let context = CoreDataManager.preview.container.viewContext
-//        TodoListView(task: Task(context: context))
+//        TodoListRowView(task: Task(context: context))
 //            .environment(\.managedObjectContext, context)
 //    }
 //}

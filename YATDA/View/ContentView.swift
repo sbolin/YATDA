@@ -53,10 +53,17 @@ struct ContentView: View {
                     List {
                         // Focus Task Section
                         Section {
-                            ForEach(focusTodo) { task in
-                                TodoListView(task: task)
+                            ForEach(focusTodo) { taskItem in
+                                TodoListRowView(task: taskItem)
+                                    .swipeActions {
+                                        Button(role: .destructive) {
+                                            deleteTask(task: taskItem)
+                                        } label: {
+                                            Image(systemName: "trash")
+                                        }
+                                    }
                             }
-                            .onDelete(perform: deleteTask)
+//                            .onDelete { deleteTask(at: $0) }
                         } header: {
                             Label("Focus", systemImage: "target")
                                 .foregroundColor(.pink)
@@ -73,10 +80,17 @@ struct ContentView: View {
 
                         // Active Task Section
                         Section {
-                            ForEach(activeTodo) { task in
-                                TodoListView(task: task)
+                            ForEach(activeTodo) { taskItem in
+                                TodoListRowView(task: taskItem)
+                                    .swipeActions {
+                                        Button(role: .destructive) {
+                                            deleteTask(task: taskItem)
+                                        } label: {
+                                            Image(systemName: "trash")
+                                        }
+                                    }
                             }
-                            .onDelete(perform: deleteTask)
+//                            .onDelete { deleteTask(at: $0) }
                         } header: {
                             Label("To Do", systemImage: "checkmark.circle")
                                 .foregroundColor(.blue)
@@ -93,10 +107,17 @@ struct ContentView: View {
 
                         // Completed Task Section
                         Section {
-                            ForEach(completedTodo) { task in
-                                TodoListView(task: task)
+                            ForEach(completedTodo) { taskItem in
+                                TodoListRowView(task: taskItem)
+                                    .swipeActions {
+                                        Button(role: .destructive) {
+                                            deleteTask(task: taskItem)
+                                        } label: {
+                                            Image(systemName: "trash")
+                                        }
+                                    }
                             }
-                            .onDelete(perform: deleteTask)
+//                            .onDelete { deleteTask(at: $0) }
                         } header: {
                             Label("Done", systemImage: "checkmark.circle.fill")
                                 .foregroundColor(.green)
@@ -129,7 +150,7 @@ struct ContentView: View {
                         HStack {
                             Image(systemName: "sun.max.fill")
                                 .foregroundColor(.yellow)
-                            Text("YATDA").font(.system(size: 28, weight: .bold, design: .rounded))
+                            Text("YATDA").font(.system(size: 26, weight: .bold, design: .rounded))
                                 .foregroundColor(.green)
                         }
                     } // ToolbarItem
@@ -139,12 +160,15 @@ struct ContentView: View {
         .environment(\.defaultMinListHeaderHeight, 40)
     } // View
 
-    private func deleteTask(at offsets: IndexSet) {
+//    private func deleteTask(at offsets: IndexSet) {
+    //    private func deleteTask(at offsets: IndexSet, in: Int) {
+    private func deleteTask(task: TaskEntity) {
         withAnimation {
-            offsets.forEach { index in
-                let task = allTasks[index]
-                coreDataManager.deleteTask(task: task, context: viewContext)
-            }
+            coreDataManager.deleteTask(task: task, context: viewContext)
+//            offsets.forEach { index in
+//                let task = allTasks[index]
+//                coreDataManager.deleteTask(task: task, context: viewContext)
+//            }
         }
     }
 }

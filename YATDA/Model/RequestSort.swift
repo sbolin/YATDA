@@ -49,7 +49,7 @@ struct RequestSort: Hashable, Identifiable {
             section: \TaskEntity.groupByMonth),
 
         RequestSort(
-            id: 3,
+            id: 4,
             name: "By Name | Month",
             descriptors: [
                 SortDescriptor(\TaskEntity.title, order: .forward)],

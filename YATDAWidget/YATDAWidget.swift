@@ -65,7 +65,7 @@ struct YATDAWidgetEntryView : View {
         let dueDate = entry.dueDate // task.dateDue?.formatted(date: .abbreviated, time: .omitted) ?? ""
         let priorityString = entry.priority.rawValue // task.priority
         ZStack {
-            Color(.systemMint)
+            Color(.systemOrange)
             VStack(alignment: .leading, spacing: 0) {
                 Text("FOCUS ITEM:")
                     .font(.caption2).bold()

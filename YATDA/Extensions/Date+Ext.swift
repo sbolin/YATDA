@@ -51,7 +51,8 @@ extension Date {
         return Calendar.current.date(from: newDateComponents)
     }
 
-    func startOfDay() -> Date {
-        Calendar.current.startOfDay(for: self)
+    func startOfDay() -> String {
+        let date = Calendar.current.startOfDay(for: self)
+        return date.formatted(date: .abbreviated, time: .omitted)
     }
 }
