@@ -51,8 +51,19 @@ extension TaskEntity {
         }
     }
 
+    @objc var titleString: String {
+        return title ?? "No task"
+    }
 
-
+    // unwrap staus
+    @objc var statusString: String {
+        switch priorityID {
+        case 0: return "Focused"
+        case 1: return "Tasks to Complete"
+        case 2: return "Completed Tasks"
+        default: return "Tasks to Completes"
+        }
+    }
 
 
     // set date format for sections...
@@ -68,8 +79,8 @@ extension TaskEntity {
  @NSManaged public var dateCompleted: Date?
  @NSManaged public var dateCreated: Date?
  @NSManaged public var dateDue: Date?
- @NSManaged public var id: UUID?
  @NSManaged public var focused: Bool
+ @NSManaged public var id: UUID?
  @NSManaged public var priority: String?
  @NSManaged public var priorityID: Int16
  @NSManaged public var title: String?

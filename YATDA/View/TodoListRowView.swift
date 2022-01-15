@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import WidgetKit
 
 struct TodoListRowView: View {
     @Environment(\.managedObjectContext) private var viewContext
@@ -19,7 +20,7 @@ struct TodoListRowView: View {
 
     var body: some View {
 
-        HStack(alignment: .top ,spacing: 4) {
+        HStack(alignment: .center ,spacing: 0) {
             Menu {
                 Picker(selection: $selectedPriority, label: Text("")) {
                     ForEach(Priority.allCases) { priority in
@@ -45,8 +46,8 @@ struct TodoListRowView: View {
                 } icon: {
                     Circle()
                         .fill(Priority.styleForPriority(task.priority ?? "Medium"))
-                        .frame(width: 14, height: 14)
-                        .padding(8)
+                        .frame(width: 15, height: 15)
+//                        .padding(8)
                 }
             } primaryAction: {
                 switch task.priorityID {
@@ -72,6 +73,7 @@ struct TodoListRowView: View {
                     break
                 }
             }
+            .frame(width: 40)
             VStack(alignment: .leading) {
                 TextField("", text: $task.title ?? "")
                     .submitLabel(SubmitLabel.done)
@@ -80,19 +82,19 @@ struct TodoListRowView: View {
                             textField.selectedTextRange = textField.textRange(from: textField.beginningOfDocument, to: textField.endOfDocument)
                         }
                 }
-                HStack {
-                    Text("Start: ").bold()
+                HStack(alignment: .firstTextBaseline) {
+                    Text("Start:").bold()
                     if let createdDate = task.dateCreated {
-                        Text(createdDate.formatted(.dateTime.weekday(.abbreviated)))
+                        Text(createdDate.formatted(.dateTime.day().month(.abbreviated)))
                     }
-
-                    Text("Due: ").bold()
+                    Spacer()
+                    Text("Due:").bold()
                     if let dueDate = task.dateDue {
-                        Text(dueDate.formattedRelativeToday())
-//                        Text(dueDate.formatted(.dateTime.weekday(.abbreviated)))
+//                        Text(dueDate.formattedRelativeToday())
+                        Text(dueDate.formatted(.dateTime.day().month(.abbreviated)))
                     } else {
-                        Text(Date().formattedRelativeToday())
-//                        Text(Date().formatted(.dateTime.weekday(.abbreviated)))
+//                        Text(Date().formattedRelativeToday())
+                        Text(Date().formatted(.dateTime.day().month(.abbreviated)))
                     }
                     Spacer()
 
@@ -102,6 +104,7 @@ struct TodoListRowView: View {
             } // VStack
             Spacer()
             Image(systemName: task.focused ? "target": "scope")
+                .font(.system(size: 18, weight: .medium, design: .rounded))
                 .foregroundColor(.red)
                 .onTapGesture {
                     withAnimation {
@@ -110,6 +113,7 @@ struct TodoListRowView: View {
                 }
                 .padding(.trailing, 6)
             Image(systemName: task.completed ? "checkmark.circle.fill": "checkmark.circle")
+                .font(.system(size: 18, weight: .medium, design: .rounded))
                 .foregroundColor(.green)
                 .onTapGesture {
                     withAnimation {
@@ -130,6 +134,7 @@ struct TodoListRowView: View {
                 print(error.localizedDescription)
             }
         }
+        WidgetCenter.shared.reloadAllTimelines()
     }
 
     private func updateCompletion() {
@@ -148,6 +153,7 @@ struct TodoListRowView: View {
                 print(error.localizedDescription)
             }
         }
+        WidgetCenter.shared.reloadAllTimelines()
     }
 }
 
@@ -159,6 +165,7 @@ struct TodoListRowView: View {
 //    }
 //}
 
+/// Helper function to unwrap optional binding
 func ??<T>(lhs: Binding<Optional<T>>, rhs: T) -> Binding<T> {
     Binding(
         get: { lhs.wrappedValue ?? rhs },

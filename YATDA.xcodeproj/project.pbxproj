@@ -30,6 +30,9 @@
 		15A0F9362722C6EF000B652A /* TodoListRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A0F9352722C6EF000B652A /* TodoListRowView.swift */; };
 		15BD2D56277397590021A4C9 /* RequestSort.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15BD2D55277397590021A4C9 /* RequestSort.swift */; };
 		15BD2D5A27739BC20021A4C9 /* TaskEntity+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15BD2D5827739BC20021A4C9 /* TaskEntity+Ext.swift */; };
+		15C232112790FECD00924CDB /* TodoEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15C232102790FECD00924CDB /* TodoEditView.swift */; };
+		15C232142792274F00924CDB /* TodoEditViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15C232132792274F00924CDB /* TodoEditViewModel.swift */; };
+		15C2321627922B2C00924CDB /* TodoValues.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15C2321527922B2C00924CDB /* TodoValues.swift */; };
 		15D9708A2773B4A800428070 /* SortSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15D970892773B4A800428070 /* SortSelectionView.swift */; };
 /* End PBXBuildFile section */
 
@@ -82,6 +85,9 @@
 		15A0F9352722C6EF000B652A /* TodoListRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoListRowView.swift; sourceTree = "<group>"; };
 		15BD2D55277397590021A4C9 /* RequestSort.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestSort.swift; sourceTree = "<group>"; };
 		15BD2D5827739BC20021A4C9 /* TaskEntity+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TaskEntity+Ext.swift"; sourceTree = "<group>"; };
+		15C232102790FECD00924CDB /* TodoEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoEditView.swift; sourceTree = "<group>"; };
+		15C232132792274F00924CDB /* TodoEditViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoEditViewModel.swift; sourceTree = "<group>"; };
+		15C2321527922B2C00924CDB /* TodoValues.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoValues.swift; sourceTree = "<group>"; };
 		15D970892773B4A800428070 /* SortSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortSelectionView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -141,6 +147,7 @@
 				15A0F9332722C2CA000B652A /* Priority.swift */,
 				15BD2D5827739BC20021A4C9 /* TaskEntity+Ext.swift */,
 				15BD2D55277397590021A4C9 /* RequestSort.swift */,
+				15C2321527922B2C00924CDB /* TodoValues.swift */,
 				15A0F9102721E1E7000B652A /* SimpleTodoModel.xcdatamodeld */,
 			);
 			path = Model;
@@ -152,6 +159,7 @@
 				15A0F9042721E07D000B652A /* ContentView.swift */,
 				15A0F9352722C6EF000B652A /* TodoListRowView.swift */,
 				1528213427269EC3009CD0A8 /* AddTodoButton.swift */,
+				15C232122792270300924CDB /* AddTodoView */,
 				15D970892773B4A800428070 /* SortSelectionView.swift */,
 			);
 			path = View;
@@ -198,6 +206,15 @@
 				15A0F9092721E07F000B652A /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		15C232122792270300924CDB /* AddTodoView */ = {
+			isa = PBXGroup;
+			children = (
+				15C232102790FECD00924CDB /* TodoEditView.swift */,
+				15C232132792274F00924CDB /* TodoEditViewModel.swift */,
+			);
+			path = AddTodoView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -314,16 +331,19 @@
 			buildActionMask = 2147483647;
 			files = (
 				15086CCD27704B9E00047EDD /* HighlightTextField.swift in Sources */,
+				15C2321627922B2C00924CDB /* TodoValues.swift in Sources */,
 				15A0F9122721E1E7000B652A /* SimpleTodoModel.xcdatamodeld in Sources */,
 				1528213527269EC3009CD0A8 /* AddTodoButton.swift in Sources */,
 				15A0F9052721E07D000B652A /* ContentView.swift in Sources */,
 				15D9708A2773B4A800428070 /* SortSelectionView.swift in Sources */,
 				15A0F9362722C6EF000B652A /* TodoListRowView.swift in Sources */,
+				15C232112790FECD00924CDB /* TodoEditView.swift in Sources */,
 				15A0F9142721E287000B652A /* CoreDataManager.swift in Sources */,
 				15086CCF27705E4900047EDD /* Date+Ext.swift in Sources */,
 				15A0F9342722C2CA000B652A /* Priority.swift in Sources */,
 				15086CCB2770482B00047EDD /* Font+Rounded.swift in Sources */,
 				15A0F9032721E07D000B652A /* YATDAApp.swift in Sources */,
+				15C232142792274F00924CDB /* TodoEditViewModel.swift in Sources */,
 				15BD2D5A27739BC20021A4C9 /* TaskEntity+Ext.swift in Sources */,
 				15BD2D56277397590021A4C9 /* RequestSort.swift in Sources */,
 			);

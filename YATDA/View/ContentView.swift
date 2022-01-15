@@ -49,19 +49,24 @@ struct ContentView: View {
                 VStack {
                     // add new todo...
                     AddTaskView()
-
                     List {
                         // Focus Task Section
                         Section {
                             ForEach(focusTodo) { taskItem in
-                                TodoListRowView(task: taskItem)
-                                    .swipeActions {
-                                        Button(role: .destructive) {
-                                            deleteTask(task: taskItem)
-                                        } label: {
-                                            Image(systemName: "trash")
-                                        }
+                                ZStack(alignment: .leading) {
+                                    NavigationLink(destination: TodoEditView(task: taskItem.objectID)) {
+                                        EmptyView()
                                     }
+                                    .opacity(0)
+                                    TodoListRowView(task: taskItem)
+                                }
+                                .swipeActions {
+                                    Button(role: .destructive) {
+                                        deleteTask(task: taskItem)
+                                    } label: {
+                                        Image(systemName: "trash")
+                                    }
+                                }
                             }
 //                            .onDelete { deleteTask(at: $0) }
                         } header: {
@@ -70,18 +75,24 @@ struct ContentView: View {
                         } footer: {
                             HStack {
                                 Spacer()
-                                Text("\(focusTodo.count) Focus Tasks")
+                                Text("\(focusTodo.count) Focus Task")
                                     .font(.footnote)
                                 .foregroundColor(.secondary)
                             }
                         }
-                        .listRowSeparator(.hidden)
+//                        .listRowSeparator(.hidden)
                         .accentColor(.pink)
 
                         // Active Task Section
                         Section {
                             ForEach(activeTodo) { taskItem in
-                                TodoListRowView(task: taskItem)
+                                ZStack(alignment: .leading) {
+                                    NavigationLink(destination: TodoEditView(task: taskItem.objectID)) {
+                                        EmptyView()
+                                    }
+                                    .opacity(0)
+                                    TodoListRowView(task: taskItem)
+                                }
                                     .swipeActions {
                                         Button(role: .destructive) {
                                             deleteTask(task: taskItem)
@@ -97,19 +108,30 @@ struct ContentView: View {
                         } footer: {
                             HStack {
                                 Spacer()
+                                if activeTodo.count == 1 {
+                                    Text("\(activeTodo.count) Task Remains")
+                                        .font(.footnote)
+                                        .foregroundColor(.secondary)
+                                } else {
                                 Text("\(activeTodo.count) Tasks Remain")
                                     .font(.footnote)
                                     .foregroundColor(.secondary)
+                                }
                             }
                         }
-                        .listRowSeparator(.hidden)
+//                        .listRowSeparator(.hidden)
                         .accentColor(.blue)
 
                         // Completed Task Section
                         Section {
                             ForEach(completedTodo) { taskItem in
-                                TodoListRowView(task: taskItem)
-                                    .swipeActions {
+                                ZStack(alignment: .leading) {
+                                    NavigationLink(destination: TodoEditView(task: taskItem.objectID)) {
+                                        EmptyView()
+                                    }
+                                    .opacity(0)
+                                    TodoListRowView(task: taskItem)
+                                }                                    .swipeActions {
                                         Button(role: .destructive) {
                                             deleteTask(task: taskItem)
                                         } label: {
@@ -124,18 +146,22 @@ struct ContentView: View {
                         } footer: {
                             HStack {
                                 Spacer()
-                                Text("\(completedTodo.count) Completed Tasks")
-                                    .font(.footnote)
-                                    .foregroundColor(.secondary)
+                                if completedTodo.count == 1 {
+                                    Text("\(completedTodo.count) Completed Task")
+                                        .font(.footnote)
+                                        .foregroundColor(.secondary)
+                                } else {
+                                    Text("\(completedTodo.count) Completed Tasks")
+                                        .font(.footnote)
+                                        .foregroundColor(.secondary)
+                                }
                             }
                         }
-                        .listRowSeparator(.hidden)
+//                        .listRowSeparator(.hidden)
                         .accentColor(.green)
                     } // List
                     .listSectionSeparator(.hidden)
-//                    .listSectionSeparatorTint(.white.opacity(0))
-                    .listRowSeparator(.hidden)
-//                    .listRowSeparatorTint(.white.opacity(0))
+//                    .listRowSeparator(.hidden)
                 } // VStack
                 .toolbar {
                     ToolbarItemGroup(placement: .navigationBarLeading) {
@@ -164,6 +190,7 @@ struct ContentView: View {
         withAnimation {
             coreDataManager.deleteTask(task: task, context: viewContext)
         }
+        WidgetCenter.shared.reloadAllTimelines()
     }
 }
 
@@ -193,7 +220,10 @@ struct AddTaskView: View {
     var body: some View {
         VStack(spacing: 12) {
             TextField("Enter New Task", text: $title)
-                .textFieldStyle(.roundedBorder)
+//            .textFieldStyle(.roundedBorder)
+                .padding(6)
+                .overlay(RoundedRectangle(cornerRadius: 8).stroke(Color.green, lineWidth: 2))
+//                .background(Color.green.opacity(0.3), in: RoundedRectangle(cornerRadius: 6))
                 .focused($taskIsFocused)
                 .textInputAutocapitalization(.words)
 
