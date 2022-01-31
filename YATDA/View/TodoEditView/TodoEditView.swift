@@ -18,8 +18,9 @@ struct TodoEditView: View {
     @State private var dateDue: Date = Date()
     @State private var focused: Bool = false
     @State private var id: UUID = UUID()
-    @State private var priority: String = "Medium"
-    @State private var priorityID: Int16 = 1
+    @State private var order: Int64 = 0
+    @State private var priority: Priority = .medium
+    @State private var priorityID: Int16 = 2
     @State private var title: String = ""
 
     @State private var error = false
@@ -28,6 +29,7 @@ struct TodoEditView: View {
     let viewModel = TodoEditViewModel()
 
     var body: some View {
+
         VStack {
             Form {
                 Section(header: Text("Task")) {
@@ -52,13 +54,14 @@ struct TodoEditView: View {
                     }
                     DatePicker("Creation Date", selection: $dateCreated, displayedComponents: .date)
                     DatePicker("Due Date", selection: $dateDue, displayedComponents: .date)
+
                     Picker("Priority", selection: $priority) {
                         ForEach(Priority.allCases) { priority in
                             Text(priority.title).tag(priority)
                                 .font(.system(size: 12, weight: .regular, design: .rounded))
                         }
                     }
-                    .colorMultiply(Priority.styleForPriority(priority))
+                    .colorMultiply(Priority.styleForPriority(priority.rawValue))
                     .pickerStyle(.segmented)
                 }
                 Section("Status") {
@@ -128,8 +131,11 @@ struct TodoEditView: View {
             dateCompleted = todo.dateCompleted ?? nil
             focused = todo.focused
             id = todo.id ?? UUID()
-            priority = todo.priority ?? "Medium"
+            order = todo.order
+            priority = Priority.priorityGivenString(todo.priorityString)
             priorityID = todo.priorityID
+            let _ = print(priority)
+            let _ = print("\(priorityID)")
         }
     }
 
@@ -144,10 +150,13 @@ struct TodoEditView: View {
             dateDue: dateDue,
             focused: focused,
             id: id,
-            priority: priority,
+            order: order,
+            priority: priority.rawValue,
             priorityID: priorityID,
             title: title)
         viewModel.saveTodo(taskID: task, with: values, in: viewContext)
+        presentation.wrappedValue.dismiss()
+
     }
 }
 

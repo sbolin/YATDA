@@ -33,6 +33,7 @@
 		15C232112790FECD00924CDB /* TodoEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15C232102790FECD00924CDB /* TodoEditView.swift */; };
 		15C232142792274F00924CDB /* TodoEditViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15C232132792274F00924CDB /* TodoEditViewModel.swift */; };
 		15C2321627922B2C00924CDB /* TodoValues.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15C2321527922B2C00924CDB /* TodoValues.swift */; };
+		15C2321827963E5700924CDB /* AddTaskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15C2321727963E5700924CDB /* AddTaskView.swift */; };
 		15D9708A2773B4A800428070 /* SortSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15D970892773B4A800428070 /* SortSelectionView.swift */; };
 /* End PBXBuildFile section */
 
@@ -88,6 +89,7 @@
 		15C232102790FECD00924CDB /* TodoEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoEditView.swift; sourceTree = "<group>"; };
 		15C232132792274F00924CDB /* TodoEditViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoEditViewModel.swift; sourceTree = "<group>"; };
 		15C2321527922B2C00924CDB /* TodoValues.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoValues.swift; sourceTree = "<group>"; };
+		15C2321727963E5700924CDB /* AddTaskView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTaskView.swift; sourceTree = "<group>"; };
 		15D970892773B4A800428070 /* SortSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortSelectionView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -158,9 +160,10 @@
 			children = (
 				15A0F9042721E07D000B652A /* ContentView.swift */,
 				15A0F9352722C6EF000B652A /* TodoListRowView.swift */,
+				15C2321727963E5700924CDB /* AddTaskView.swift */,
 				1528213427269EC3009CD0A8 /* AddTodoButton.swift */,
-				15C232122792270300924CDB /* AddTodoView */,
 				15D970892773B4A800428070 /* SortSelectionView.swift */,
+				15C232122792270300924CDB /* TodoEditView */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -208,13 +211,13 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
-		15C232122792270300924CDB /* AddTodoView */ = {
+		15C232122792270300924CDB /* TodoEditView */ = {
 			isa = PBXGroup;
 			children = (
 				15C232102790FECD00924CDB /* TodoEditView.swift */,
 				15C232132792274F00924CDB /* TodoEditViewModel.swift */,
 			);
-			path = AddTodoView;
+			path = TodoEditView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -343,6 +346,7 @@
 				15A0F9342722C2CA000B652A /* Priority.swift in Sources */,
 				15086CCB2770482B00047EDD /* Font+Rounded.swift in Sources */,
 				15A0F9032721E07D000B652A /* YATDAApp.swift in Sources */,
+				15C2321827963E5700924CDB /* AddTaskView.swift in Sources */,
 				15C232142792274F00924CDB /* TodoEditViewModel.swift in Sources */,
 				15BD2D5A27739BC20021A4C9 /* TaskEntity+Ext.swift in Sources */,
 				15BD2D56277397590021A4C9 /* RequestSort.swift in Sources */,

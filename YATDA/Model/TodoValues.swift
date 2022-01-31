@@ -14,6 +14,7 @@ struct TodoValues {
     let dateDue: Date
     let focused: Bool
     let id: UUID
+    let order: Int64
     let priority: String
     let priorityID: Int16
     let title: String

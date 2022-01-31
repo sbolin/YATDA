@@ -16,7 +16,7 @@ struct RequestSort: Hashable, Identifiable {
     static let sorts: [RequestSort] = [
         RequestSort(
             id: 0,
-            name: "Default",
+            name: "By Priority",
             descriptors: [
                 SortDescriptor(\TaskEntity.priorityID, order: .reverse),
                 SortDescriptor(\TaskEntity.title, order: .forward),
@@ -34,7 +34,7 @@ struct RequestSort: Hashable, Identifiable {
 
         RequestSort(
             id: 2,
-            name: "By Date Due | Month",
+            name: "By Date Due",
             descriptors: [
                 SortDescriptor(\TaskEntity.dateDue, order: .forward),
                 SortDescriptor(\TaskEntity.title, order: .forward)],
@@ -42,7 +42,7 @@ struct RequestSort: Hashable, Identifiable {
 
         RequestSort(
             id: 3,
-            name: "By Date Created | Month",
+            name: "By Date Created",
             descriptors: [
                 SortDescriptor(\TaskEntity.dateCreated, order: .forward),
                 SortDescriptor(\TaskEntity.title, order: .forward)],
@@ -50,10 +50,17 @@ struct RequestSort: Hashable, Identifiable {
 
         RequestSort(
             id: 4,
-            name: "By Name | Month",
+            name: "By Name",
             descriptors: [
                 SortDescriptor(\TaskEntity.title, order: .forward)],
-            section: \TaskEntity.groupByMonth)
+            section: \TaskEntity.groupByMonth),
+
+        RequestSort(
+            id: 5,
+            name: "User",
+            descriptors: [
+                SortDescriptor(\TaskEntity.order, order: .forward)],
+            section: \TaskEntity.statusString),
     ]
     static var `default`: RequestSort { sorts[0] }
 }

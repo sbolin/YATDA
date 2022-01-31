@@ -14,19 +14,20 @@ struct ContentView: View {
 
     @FetchRequest<TaskEntity>(
         sortDescriptors: [
+//            SortDescriptor(\TaskEntity.order, order: .forward),
             SortDescriptor(\TaskEntity.priorityID, order: .reverse),
-            SortDescriptor(\TaskEntity.title, order: .forward),
-            SortDescriptor(\TaskEntity.dateCreated, order: .reverse)
+//            SortDescriptor(\TaskEntity.dateCreated, order: .reverse)
+            //            SortDescriptor(\TaskEntity.title, order: .forward)
         ],
         animation: .default)
     private var allTasks: FetchedResults<TaskEntity>
 
-//    @FocusState private var taskIsFocused: Bool
+    //    @FocusState private var taskIsFocused: Bool
     @State private var title: String = ""
     @State private var selectedPriority: Priority = .medium
     @State private var selectedSort = RequestSort.default
     //
-    //   @State private var isEditing: EditMode = .inactive
+    @State private var editMode: EditMode = .inactive
     //
 
     private var activeTodo: [TaskEntity] {
@@ -46,145 +47,204 @@ struct ContentView: View {
 
     var body: some View {
         NavigationView {
-                VStack {
-                    // add new todo...
-                    AddTaskView()
-                    List {
-                        // Focus Task Section
-                        Section {
-                            ForEach(focusTodo) { taskItem in
-                                ZStack(alignment: .leading) {
-                                    NavigationLink(destination: TodoEditView(task: taskItem.objectID)) {
-                                        EmptyView()
-                                    }
-                                    .opacity(0)
-                                    TodoListRowView(task: taskItem)
+            VStack {
+                // add new todo...
+                AddTaskView()
+                List {
+                    // Focus Task Section
+                    Section {
+                        ForEach(focusTodo) { taskItem in
+                            ZStack(alignment: .leading) {
+                                NavigationLink(destination: TodoEditView(task: taskItem.objectID)) {
+                                    EmptyView()
                                 }
-                                .swipeActions {
-                                    Button(role: .destructive) {
-                                        deleteTask(task: taskItem)
-                                    } label: {
-                                        Image(systemName: "trash")
-                                    }
-                                }
+                                .opacity(0)
+                                TodoListRowView(task: taskItem)
                             }
-//                            .onDelete { deleteTask(at: $0) }
-                        } header: {
-                            Label("Focus", systemImage: "target")
-                                .foregroundColor(.pink)
-                        } footer: {
-                            HStack {
-                                Spacer()
-                                Text("\(focusTodo.count) Focus Task")
-                                    .font(.footnote)
-                                .foregroundColor(.secondary)
+                            .swipeActions {
+                                Button(role: .destructive) {
+                                    deleteTask(task: taskItem)
+                                } label: {
+                                    Image(systemName: "trash")
+                                }
                             }
                         }
-//                        .listRowSeparator(.hidden)
-                        .accentColor(.pink)
+                    } header: {
+                        Label("Focus", systemImage: "target")
+                            .foregroundColor(.pink)
+                    } footer: {
+                        HStack {
+                            Spacer()
+                            Text("\(focusTodo.count) Focus Task")
+                                .font(.footnote)
+                                .foregroundColor(.secondary)
+                        }
+                    }
+                    //                        .listRowSeparator(.hidden)
+                    .accentColor(.pink)
 
-                        // Active Task Section
-                        Section {
-                            ForEach(activeTodo) { taskItem in
-                                ZStack(alignment: .leading) {
-                                    NavigationLink(destination: TodoEditView(task: taskItem.objectID)) {
-                                        EmptyView()
-                                    }
-                                    .opacity(0)
-                                    TodoListRowView(task: taskItem)
+                    // Active Task Section
+                    Section {
+                        ForEach(activeTodo) { taskItem in
+                            ZStack(alignment: .leading) {
+                                NavigationLink(destination: TodoEditView(task: taskItem.objectID)) {
+                                    EmptyView()
                                 }
-                                    .swipeActions {
-                                        Button(role: .destructive) {
-                                            deleteTask(task: taskItem)
-                                        } label: {
-                                            Image(systemName: "trash")
-                                        }
-                                    }
+                                .opacity(0)
+                                TodoListRowView(task: taskItem)
                             }
-//                            .onDelete { deleteTask(at: $0) }
-                        } header: {
-                            Label("To Do", systemImage: "checkmark.circle")
-                                .foregroundColor(.blue)
-                        } footer: {
-                            HStack {
-                                Spacer()
-                                if activeTodo.count == 1 {
-                                    Text("\(activeTodo.count) Task Remains")
-                                        .font(.footnote)
-                                        .foregroundColor(.secondary)
-                                } else {
+                            .swipeActions {
+                                Button(role: .destructive) {
+                                    deleteTask(task: taskItem)
+                                } label: {
+                                    Image(systemName: "trash")
+                                }
+                            }
+                        }
+                        .onMove(perform: move)
+//                        .onInsert(of: [.text], perform: insert)
+                    } header: {
+                        Label("To Do", systemImage: "checkmark.circle")
+                            .foregroundColor(.blue)
+                    } footer: {
+                        HStack {
+                            Spacer()
+                            if activeTodo.count == 1 {
+                                Text("\(activeTodo.count) Task Remains")
+                                    .font(.footnote)
+                                    .foregroundColor(.secondary)
+                            } else {
                                 Text("\(activeTodo.count) Tasks Remain")
                                     .font(.footnote)
                                     .foregroundColor(.secondary)
+                            }
+                        }
+                    }
+                    //                        .listRowSeparator(.hidden)
+                    .accentColor(.blue)
+
+                    // Completed Task Section
+                    Section {
+                        ForEach(completedTodo) { taskItem in
+                            ZStack(alignment: .leading) {
+                                NavigationLink(destination: TodoEditView(task: taskItem.objectID)) {
+                                    EmptyView()
+                                }
+                                .opacity(0)
+                                TodoListRowView(task: taskItem)
+                            }                                    .swipeActions {
+                                Button(role: .destructive) {
+                                    deleteTask(task: taskItem)
+                                } label: {
+                                    Image(systemName: "trash")
                                 }
                             }
                         }
-//                        .listRowSeparator(.hidden)
-                        .accentColor(.blue)
-
-                        // Completed Task Section
-                        Section {
-                            ForEach(completedTodo) { taskItem in
-                                ZStack(alignment: .leading) {
-                                    NavigationLink(destination: TodoEditView(task: taskItem.objectID)) {
-                                        EmptyView()
-                                    }
-                                    .opacity(0)
-                                    TodoListRowView(task: taskItem)
-                                }                                    .swipeActions {
-                                        Button(role: .destructive) {
-                                            deleteTask(task: taskItem)
-                                        } label: {
-                                            Image(systemName: "trash")
-                                        }
-                                    }
-                            }
-//                            .onDelete { deleteTask(at: $0) }
-                        } header: {
-                            Label("Done", systemImage: "checkmark.circle.fill")
-                                .foregroundColor(.green)
-                        } footer: {
-                            HStack {
-                                Spacer()
-                                if completedTodo.count == 1 {
-                                    Text("\(completedTodo.count) Completed Task")
-                                        .font(.footnote)
-                                        .foregroundColor(.secondary)
-                                } else {
-                                    Text("\(completedTodo.count) Completed Tasks")
-                                        .font(.footnote)
-                                        .foregroundColor(.secondary)
-                                }
-                            }
-                        }
-//                        .listRowSeparator(.hidden)
-                        .accentColor(.green)
-                    } // List
-                    .listSectionSeparator(.hidden)
-//                    .listRowSeparator(.hidden)
-                } // VStack
-                .toolbar {
-                    ToolbarItemGroup(placement: .navigationBarLeading) {
-                        SortSelectionView(selectedSortItem: $selectedSort, sorts: RequestSort.sorts)
-                            .onChange(of: selectedSort) { _ in
-                                let request = allTasks
-                                request.sortDescriptors = selectedSort.descriptors
-                            } // onChange
-                    } // ToolbarItemGroup
-
-                    ToolbarItemGroup(placement: .principal) {
+                        //                            .onDelete { deleteTask(at: $0) }
+                    } header: {
+                        Label("Done", systemImage: "checkmark.circle.fill")
+                            .foregroundColor(.green)
+                    } footer: {
                         HStack {
-                            Image(systemName: "sun.max.fill")
-                                .foregroundColor(.yellow)
-                            Text("YATDA").font(.system(size: 26, weight: .bold, design: .rounded))
-                                .foregroundColor(.green)
+                            Spacer()
+                            if completedTodo.count == 1 {
+                                Text("\(completedTodo.count) Completed Task")
+                                    .font(.footnote)
+                                    .foregroundColor(.secondary)
+                            } else {
+                                Text("\(completedTodo.count) Completed Tasks")
+                                    .font(.footnote)
+                                    .foregroundColor(.secondary)
+                            }
                         }
-                    } // ToolbarItem
-                } // toolbar
+                    }
+                    //                        .listRowSeparator(.hidden)
+                    .accentColor(.green)
+                } // List
+                .listSectionSeparator(.hidden)
+                //                    .listRowSeparator(.hidden)
+            } // VStack
+            .toolbar {
+                ToolbarItemGroup(placement: .navigationBarLeading) {
+                    SortSelectionView(selectedSortItem: $selectedSort, sorts: RequestSort.sorts)
+                        .onChange(of: selectedSort) { _ in
+                            let request = allTasks
+                            request.sortDescriptors = selectedSort.descriptors
+                        } // onChange
+                } // ToolbarItemGroup
+
+                ToolbarItemGroup(placement: .principal) {
+                    HStack {
+                        Image(systemName: "sun.max.fill")
+                            .foregroundColor(.yellow)
+                        Text("YATDA").font(.system(size: 26, weight: .bold, design: .rounded))
+                            .foregroundColor(.green)
+                    } // HStack
+                } // ToolbarItemGroup
+
+                ToolbarItemGroup(placement: .navigationBarTrailing) {
+                    EditButton()
+                } // ToolbarItemGroup
+            } // toolbar
             .navigationBarTitleDisplayMode(.inline)
+            .environment(\.editMode, $editMode)
         } // NavigationView
         .environment(\.defaultMinListHeaderHeight, 40)
     } // View
+
+    private func move(from source: IndexSet, to destination: Int) {
+// try to use activeTodo rather than revisedItems. If works, keep it, otherwise change activeTodo back to revisedItems
+
+//        var revisedItems: [TaskEntity] = activeTodo.map { $0 }
+
+        let itemToMove = source.first! // guard ... else { return }
+        if itemToMove == destination { return }
+        if itemToMove < destination {
+            var startIndex = itemToMove + 1
+            let endIndex = destination - 1
+            var startOrder = activeTodo[itemToMove].order
+            while startIndex <= endIndex {
+                activeTodo[startIndex].order = startOrder
+                startOrder += 1
+                startIndex += 1
+            }
+            activeTodo[itemToMove].order = startOrder
+        } else if destination < itemToMove {
+            var startIndex = destination
+            let endIndex = itemToMove - 1
+            var startOrder = activeTodo[destination].order + 1
+            let newOrder = activeTodo[destination].order
+            while startIndex <= endIndex {
+                activeTodo[startIndex].order = startOrder
+                startOrder += 1
+                startIndex += 1
+            }
+            activeTodo[itemToMove].order = newOrder
+        }
+//        activeTodo.move(fromOffsets: source, toOffset: destination)
+        coreDataManager.save()
+
+//        revisedItems.move(fromOffsets: source, toOffset: destination)
+//        if let oldIndex = source.first, oldIndex != destination {
+//            let newIndex = oldIndex < destination ? destination - 1 : destination
+//        }
+//
+//        for reverseIndex in stride(from: revisedItems.count - 1, through: 0, by: -1) {
+//            revisedItems[reverseIndex].order = Int64(reverseIndex)
+//        }
+    }
+
+//    private func insert(at offset: Int, itemProvider: [NSItemProvider]) {
+//        for provider in itemProvider {
+//            if provider.canLoadObject(ofClass: String.self) {
+//                _ = provider.loadObject(ofClass: String.self) { item, error in
+//                    DispatchQueue.main.async {
+//                        item.map { self.items.insert(TaskEntity(title: $0.absoluteString), at: offset) }
+//                    }
+//                }
+//            }
+//        }
+//    }
 
     private func deleteTask(task: TaskEntity) {
         withAnimation {
@@ -197,80 +257,6 @@ struct ContentView: View {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
-    }
-}
-
-struct AddTaskView: View {
-
-    @Environment(\.managedObjectContext) private var viewContext
-    let coreDataManager: CoreDataManager = .shared
-
-    @State var title: String = ""
-    @FocusState private var taskIsFocused: Bool
-    @State private var selectedPriority: Priority = .medium
-
-    private var buttonColor: Color {
-        return todoIsValid ? .accentColor : .secondary
-    }
-
-    private var todoIsValid: Bool {
-        !title.isEmpty
-    }
-
-    var body: some View {
-        VStack(spacing: 12) {
-            TextField("Enter New Task", text: $title)
-//            .textFieldStyle(.roundedBorder)
-                .padding(6)
-                .overlay(RoundedRectangle(cornerRadius: 8).stroke(Color.green, lineWidth: 2))
-//                .background(Color.green.opacity(0.3), in: RoundedRectangle(cornerRadius: 6))
-                .focused($taskIsFocused)
-                .textInputAutocapitalization(.words)
-
-            Picker("Priority", selection: $selectedPriority) {
-                ForEach(Priority.allCases) { priority in
-                    Text(priority.title).tag(priority)
-                        .font(.system(size: 12, weight: .regular, design: .rounded))
-                }
-            }
-            .colorMultiply(Priority.styleForPriority(selectedPriority.rawValue))
-            .pickerStyle(.segmented)
-
-            Button("Add Task") {
-                saveTask()
-                title = ""
-                taskIsFocused = false
-            }
-            .disabled(!todoIsValid)
-            .frame(width: 90, height: 32)
-            .background(buttonColor)
-            .foregroundColor(.white)
-            .clipShape(RoundedRectangle(cornerRadius: 10.0, style: .circular))
-            Divider()
-        }.padding(.horizontal)
-    }
-
-    private func saveTask() {
-        let task = TaskEntity(context: viewContext)
-        task.title = title
-        task.id = UUID()
-        task.priority = selectedPriority.rawValue
-        switch selectedPriority {
-        case .low:
-            task.priorityID = 1
-        case .medium:
-            task.priorityID = 2
-        case .high:
-            task.priorityID = 3
-        case .non:
-            task.priorityID = 0
-        }
-        task.dateCreated = Date()
-        // for now...
-        task.dateDue = Date().addingTimeInterval(60 * 60 * 24) // + 1 day
-        task.completed = false
-        coreDataManager.save()
-        WidgetCenter.shared.reloadAllTimelines()
     }
 }
 

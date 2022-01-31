@@ -24,6 +24,16 @@ enum Priority: String, Identifiable, CaseIterable {
         case .none: return Color.gray
         }
     }
+
+    static func priorityGivenString(_ priority: String) -> Priority {
+        switch priority {
+        case "None": return .non
+        case "Low": return .low
+        case "Medium": return .medium
+        case "High": return .high
+        default: return .non
+        }
+    }
 }
 
 extension Priority {
