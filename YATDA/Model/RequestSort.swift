@@ -11,7 +11,7 @@ struct RequestSort: Hashable, Identifiable {
     let id: Int
     let name: String
     let descriptors: [SortDescriptor<TaskEntity>]
-    let section: KeyPath<TaskEntity, String>
+//    let section: KeyPath<TaskEntity, String>
 
     static let sorts: [RequestSort] = [
         RequestSort(
@@ -19,48 +19,54 @@ struct RequestSort: Hashable, Identifiable {
             name: "By Priority",
             descriptors: [
                 SortDescriptor(\TaskEntity.priorityID, order: .reverse),
-                SortDescriptor(\TaskEntity.title, order: .forward),
-                SortDescriptor(\TaskEntity.dateCreated, order: .reverse)],
-            section: \TaskEntity.priorityString),
+                SortDescriptor(\TaskEntity.dateCreated, order: .reverse),
+                SortDescriptor(\TaskEntity.title, order: .forward)]
+//            section: \TaskEntity.priorityString
+        ), // \TaskEntity.statusString
 
         RequestSort(
             id: 1,
-            name: "By Completion",
+            name: "By Name",
             descriptors: [
-                SortDescriptor(\TaskEntity.completed, order: .forward),
-                SortDescriptor(\TaskEntity.priorityID, order: .reverse),
-                SortDescriptor(\TaskEntity.title, order: .forward)],
-            section: \TaskEntity.priorityString),
+                SortDescriptor(\TaskEntity.title, order: .forward)]
+//            section: \TaskEntity.priorityString
+        ), // \TaskEntity.statusString
 
         RequestSort(
             id: 2,
             name: "By Date Due",
             descriptors: [
                 SortDescriptor(\TaskEntity.dateDue, order: .forward),
-                SortDescriptor(\TaskEntity.title, order: .forward)],
-            section: \TaskEntity.groupByMonth),
+                SortDescriptor(\TaskEntity.title, order: .forward)]
+//            section: \TaskEntity.priorityString
+        ), // \TaskEntity.groupByMonth
 
         RequestSort(
             id: 3,
             name: "By Date Created",
             descriptors: [
                 SortDescriptor(\TaskEntity.dateCreated, order: .forward),
-                SortDescriptor(\TaskEntity.title, order: .forward)],
-            section: \TaskEntity.groupByMonth),
+                SortDescriptor(\TaskEntity.title, order: .forward)]
+//            section: \TaskEntity.priorityString
+        ), // \TaskEntity.groupByMonth
 
         RequestSort(
             id: 4,
-            name: "By Name",
+            name: "By Completion",
             descriptors: [
-                SortDescriptor(\TaskEntity.title, order: .forward)],
-            section: \TaskEntity.groupByMonth),
+                SortDescriptor(\TaskEntity.completed, order: .forward),
+                SortDescriptor(\TaskEntity.priorityID, order: .reverse),
+                SortDescriptor(\TaskEntity.title, order: .forward)]
+//            section: \TaskEntity.priorityString
+        ), // \TaskEntity.priorityString
 
         RequestSort(
             id: 5,
-            name: "User",
+            name: "User Defined",
             descriptors: [
-                SortDescriptor(\TaskEntity.order, order: .forward)],
-            section: \TaskEntity.statusString),
+                SortDescriptor(\TaskEntity.order, order: .forward)]
+//            section: \TaskEntity.statusString
+        )
     ]
     static var `default`: RequestSort { sorts[0] }
 }

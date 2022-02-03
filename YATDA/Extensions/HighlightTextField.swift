@@ -4,6 +4,7 @@
 //
 //  Created by Scott Bolin on 20-Dec-21.
 //
+// see: https://stackoverflow.com/questions/67502138/select-all-text-in-textfield-upon-click-swiftui
 
 import UIKit
 import SwiftUI

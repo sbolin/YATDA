@@ -10,6 +10,8 @@ import SwiftUI
 @main
 struct YATDAApp: App {
 
+    @Environment(\.scenePhase) var scenePhase
+
     // shim to allow for rounded text in NavigationView titles. Thanks to Peter Friese
 
     init() {

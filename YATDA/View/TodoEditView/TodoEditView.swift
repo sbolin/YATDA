@@ -11,22 +11,40 @@ import SwiftUI
 struct TodoEditView: View {
     @Environment(\.managedObjectContext) private var viewContext
     @Environment(\.presentationMode) var presentation
+    @ObservedObject var todo: TaskEntity
+    @ObservedObject private var viewModel = TodoEditViewModel()
 
-    @State private var completed: Bool = false
-    @State private var dateCompleted: Date? = nil
-    @State private var dateCreated: Date = Date()
-    @State private var dateDue: Date = Date()
-    @State private var focused: Bool = false
-    @State private var id: UUID = UUID()
-    @State private var order: Int64 = 0
-    @State private var priority: Priority = .medium
-    @State private var priorityID: Int16 = 2
-    @State private var title: String = ""
+    @State private var completed: Bool // = false
+    @State private var dateCompleted: Date? // = nil
+    @State private var dateCreated: Date // = Date()
+    @State private var dateDue: Date // = Date()
+    @State private var focused: Bool // = false
+    @State private var id: UUID // = UUID()
+    @State private var order: Int64 // = 0
+    @State private var priority: Priority // = .medium
+    @State private var priorityID: Int16 // = 2
+    @State private var title: String // = ""
 
     @State private var error = false
 
-    var task: NSManagedObjectID?
-    let viewModel = TodoEditViewModel()
+    init(todo: TaskEntity) {
+        self.todo = todo
+        self._title = State(initialValue: todo.titleString)
+        self._completed = State(initialValue: todo.completed)
+        self._dateCompleted = State(initialValue: todo.dateCompleted)
+        self._dateCreated = State(initialValue: todo.dateCreated ?? Date())
+        self._dateDue = State(initialValue: todo.dateDue ?? Date())
+        self._focused = State(initialValue: todo.focused)
+        self._id = State(initialValue: todo.id ?? UUID())
+        self._order = State(initialValue: todo.order)
+        self._priority = State(initialValue: Priority.priorityGivenString(todo.priority!))  //
+        self._priorityID = State(initialValue: todo.priorityID)
+        print("1. Editing todo...")
+        print("1. Passed in title: \(todo.title ?? "No Title")")
+        print("1. Passed in priority: \(todo.priority ?? "None")")
+        print("1. Initialized priority: \(priority.rawValue)")
+        print()
+    }
 
     var body: some View {
 
@@ -56,14 +74,30 @@ struct TodoEditView: View {
                     DatePicker("Due Date", selection: $dateDue, displayedComponents: .date)
 
                     Picker("Priority", selection: $priority) {
-                        ForEach(Priority.allCases) { priority in
-                            Text(priority.title).tag(priority)
+                        ForEach(Priority.allCases, id: \.self) { priority in
+                            Text(priority.rawValue).tag(priority)
                                 .font(.system(size: 12, weight: .regular, design: .rounded))
                         }
                     }
                     .colorMultiply(Priority.styleForPriority(priority.rawValue))
                     .pickerStyle(.segmented)
-                }
+                    .onChange(of: priority) { newPriority in // priority
+                        switch newPriority {
+                        case .non:
+                            priorityID = 0
+                        case .low:
+                            priorityID = 1
+                        case .medium:
+                            priorityID = 2
+                        case .high:
+                            priorityID = 3
+                        }
+                        priority = newPriority
+                        let _ = print("Changed Picker value:")
+                        let _ = print("onChange: \(priority.rawValue)")
+                        let _ = print("onChange: \(priorityID)")
+                    }
+                } // Section
                 Section("Status") {
                     HStack {
                         Text("Focus")
@@ -88,9 +122,25 @@ struct TodoEditView: View {
                         .toggleStyle(.button)
                         .tint(.clear)
                     }
-                }
+                } // Section
 
             } // Form
+//            .onAppear {
+//                guard let taskID = task else { return }
+//                guard let todo = viewModel.fetchTodo(for: taskID, context: viewContext) else { return }
+//                self.title = self.todo.titleString
+//                self.completed = self.todo.completed
+//                self.dateCreated = self.todo.dateCreated ?? Date()
+//                self.dateDue = self.todo.dateDue ?? Date().advanced(by: 24 * 60 * 60)
+//                self.dateCompleted = self.todo.dateCompleted ?? nil
+//                self.focused = self.todo.focused
+//                self.id = self.todo.id ?? UUID()
+//                self.order = self.todo.order
+//                self.priority = Priority.priorityGivenString(self.todo.priorityString)
+//                self.priorityID = self.todo.priorityID
+//                let _ = print("onAppear: \(priority)")
+//                let _ = print("onAppear: \(priorityID)")
+//            }
             Spacer()
             HStack {
                 Button {
@@ -107,7 +157,7 @@ struct TodoEditView: View {
                     if title.isEmpty {
                         error = title.isEmpty
                     } else {
-                        addTask()
+                        saveTodo()
                     }
                 } label: {
                     Text("Save")
@@ -119,30 +169,21 @@ struct TodoEditView: View {
             } // HStack
             .padding(.horizontal, 30)
         } // VStack
-        .navigationTitle("\(task == nil ? "Add Todo" : "Edit Todo")")
+        .navigationTitle("Edit Todo")
         .navigationBarTitleDisplayMode(.inline)
-        .onAppear {
-            guard let taskID = task else { return }
-            guard let todo = viewModel.fetchTodo(for: taskID, context: viewContext) else { return }
-            title = todo.titleString
-            completed = todo.completed
-            dateCreated = todo.dateCreated ?? Date()
-            dateDue = todo.dateDue ?? Date().advanced(by: 24 * 60 * 60)
-            dateCompleted = todo.dateCompleted ?? nil
-            focused = todo.focused
-            id = todo.id ?? UUID()
-            order = todo.order
-            priority = Priority.priorityGivenString(todo.priorityString)
-            priorityID = todo.priorityID
-            let _ = print(priority)
-            let _ = print("\(priorityID)")
-        }
     }
 
-    func addTask() {
-        priorityID = 1
-        if focused { priorityID = 0 }
-        if completed { priorityID = 2 }
+    func saveTodo() {
+        print(#function)
+        print("2. Saving todo")
+        print("2. Title: \(title)")
+        print("2. Priority: \(priority)")
+        print("2. Saved priority: \(Priority.priorityGivenString(todo.priorityString))")
+        print("2. Priority id: \(priorityID)")
+        print()
+//        priorityID = 1
+//        if focused { priorityID = 0 }
+//        if completed { priorityID = 2 }
         let values = TodoValues(
             completed: completed,
             dateCompleted: dateCompleted,
@@ -154,7 +195,7 @@ struct TodoEditView: View {
             priority: priority.rawValue,
             priorityID: priorityID,
             title: title)
-        viewModel.saveTodo(taskID: task, with: values, in: viewContext)
+        viewModel.saveTodo(taskID: todo.objectID, with: values, in: viewContext)
         presentation.wrappedValue.dismiss()
 
     }
@@ -162,12 +203,6 @@ struct TodoEditView: View {
 
 struct TodoEditView_Previews: PreviewProvider {
     static var previews: some View {
-        TodoEditView()
+        TodoEditView(todo: TaskEntity())
     }
 }
-
-/*
- @NSManaged public var priority: String?
- @NSManaged public var priorityID: Int16
- @NSManaged public var title: String?
- */

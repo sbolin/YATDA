@@ -18,10 +18,10 @@ enum Priority: String, Identifiable, CaseIterable {
         let priority = Priority(rawValue: value)
         switch priority {
         case .non: return Color.gray
-        case .low: return Color.green
-        case .medium: return Color.yellow
+        case .low: return Color.yellow
+        case .medium: return Color.orange
         case .high: return Color.red
-        case .none: return Color.gray
+        default: return Color.gray
         }
     }
 
@@ -32,21 +32,6 @@ enum Priority: String, Identifiable, CaseIterable {
         case "Medium": return .medium
         case "High": return .high
         default: return .non
-        }
-    }
-}
-
-extension Priority {
-    var title: String {
-        switch self {
-        case .non:
-            return "None"
-        case .low:
-            return "Low"
-        case .medium:
-            return "Medium"
-        case .high:
-            return "High"
         }
     }
 }

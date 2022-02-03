@@ -9,7 +9,7 @@ import CoreData
 import Foundation
 import WidgetKit
 
-struct TodoEditViewModel {
+class TodoEditViewModel: ObservableObject {
     let coreDataManager: CoreDataManager = .shared
 
     func fetchTodo(for taskID: NSManagedObjectID, context: NSManagedObjectContext) -> TaskEntity? {

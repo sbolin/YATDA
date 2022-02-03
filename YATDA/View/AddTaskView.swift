@@ -18,7 +18,7 @@ struct AddTaskView: View {
     @State private var selectedPriority: Priority = .medium
 
     private var buttonColor: Color {
-        return todoIsValid ? .accentColor : .secondary
+        return todoIsValid ? .accentColor : .gray.opacity(0.3)
     }
 
     private var todoIsValid: Bool {
@@ -28,16 +28,14 @@ struct AddTaskView: View {
     var body: some View {
         VStack(spacing: 12) {
             TextField("Enter New Task", text: $title)
-            //            .textFieldStyle(.roundedBorder)
                 .padding(6)
                 .overlay(RoundedRectangle(cornerRadius: 8).stroke(Color.green, lineWidth: 2))
-            //                .background(Color.green.opacity(0.3), in: RoundedRectangle(cornerRadius: 6))
                 .focused($taskIsFocused)
                 .textInputAutocapitalization(.words)
 
             Picker("Priority", selection: $selectedPriority) {
                 ForEach(Priority.allCases) { priority in
-                    Text(priority.title).tag(priority)
+                    Text(priority.rawValue.capitalized) // .tag(priority)
                         .font(.system(size: 12, weight: .regular, design: .rounded))
                 }
             }
@@ -64,22 +62,24 @@ struct AddTaskView: View {
         task.id = UUID()
         task.priority = selectedPriority.rawValue
         switch selectedPriority {
+        case .non:
+            task.priorityID = 0
         case .low:
             task.priorityID = 1
         case .medium:
             task.priorityID = 2
         case .high:
             task.priorityID = 3
-        case .non:
-            task.priorityID = 0
         }
         task.dateCreated = Date()
-        // for now...
+        // default due date is 1 day after creation.
         task.dateDue = Date().addingTimeInterval(60 * 60 * 24) // + 1 day
         task.completed = false
-        task.order = 1
+//        task.order = 1
         coreDataManager.save()
         WidgetCenter.shared.reloadAllTimelines()
+        print("Saving Task with priority: \(task.priority ?? "NA")")
+        print("and with priorityID: \(task.priorityID)")
     }
 }
 

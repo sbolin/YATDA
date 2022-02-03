@@ -22,7 +22,7 @@ struct TodoListRowView: View {
 
         HStack(alignment: .center ,spacing: 0) {
             Menu {
-                Picker(selection: $selectedPriority, label: Text("")) {
+                Picker("", selection: $selectedPriority) {
                     ForEach(Priority.allCases) { priority in
                         Text(priority.rawValue.capitalized)
                     }
@@ -47,7 +47,6 @@ struct TodoListRowView: View {
                     Circle()
                         .fill(Priority.styleForPriority(task.priority ?? "Medium"))
                         .frame(width: 15, height: 15)
-//                        .padding(8)
                 }
             } primaryAction: {
                 switch task.priorityID {
@@ -71,6 +70,13 @@ struct TodoListRowView: View {
                     task.priorityID = 0
                     task.priority = Priority.non.rawValue
                     break
+                }
+                
+                print("Priority changed via dot to: \(task.priority ?? "No Priority"), \(task.priorityID)")
+                do {
+                    try viewContext.save()
+                } catch {
+                    print("Save error")
                 }
             }
             .frame(width: 40)

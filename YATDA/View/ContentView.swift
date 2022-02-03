@@ -17,14 +17,14 @@ struct ContentView: View {
 //            SortDescriptor(\TaskEntity.order, order: .forward),
             SortDescriptor(\TaskEntity.priorityID, order: .reverse),
 //            SortDescriptor(\TaskEntity.dateCreated, order: .reverse)
-            //            SortDescriptor(\TaskEntity.title, order: .forward)
+//            SortDescriptor(\TaskEntity.title, order: .forward)
         ],
         animation: .default)
     private var allTasks: FetchedResults<TaskEntity>
 
-    //    @FocusState private var taskIsFocused: Bool
-    @State private var title: String = ""
-    @State private var selectedPriority: Priority = .medium
+//    @FocusState private var taskIsFocused: Bool
+//    @State private var title: String = ""
+//    @State private var selectedPriority: Priority = .medium
     @State private var selectedSort = RequestSort.default
     //
     @State private var editMode: EditMode = .inactive
@@ -55,7 +55,8 @@ struct ContentView: View {
                     Section {
                         ForEach(focusTodo) { taskItem in
                             ZStack(alignment: .leading) {
-                                NavigationLink(destination: TodoEditView(task: taskItem.objectID)) {
+                                //                                NavigationLink(destination: TodoEditView(task: taskItem.objectID)) {
+                                NavigationLink(destination: TodoEditView(todo: taskItem)) {
                                     EmptyView()
                                 }
                                 .opacity(0)
@@ -87,7 +88,8 @@ struct ContentView: View {
                     Section {
                         ForEach(activeTodo) { taskItem in
                             ZStack(alignment: .leading) {
-                                NavigationLink(destination: TodoEditView(task: taskItem.objectID)) {
+                                //                                NavigationLink(destination: TodoEditView(task: taskItem.objectID)) {
+                                NavigationLink(destination: TodoEditView(todo: taskItem)) {
                                     EmptyView()
                                 }
                                 .opacity(0)
@@ -102,7 +104,7 @@ struct ContentView: View {
                             }
                         }
                         .onMove(perform: move)
-//                        .onInsert(of: [.text], perform: insert)
+                        //                        .onInsert(of: [.text], perform: insert)
                     } header: {
                         Label("To Do", systemImage: "checkmark.circle")
                             .foregroundColor(.blue)
@@ -127,12 +129,14 @@ struct ContentView: View {
                     Section {
                         ForEach(completedTodo) { taskItem in
                             ZStack(alignment: .leading) {
-                                NavigationLink(destination: TodoEditView(task: taskItem.objectID)) {
+                                //                                NavigationLink(destination: TodoEditView(task: taskItem.objectID)) {
+                                NavigationLink(destination: TodoEditView(todo: taskItem)) {
                                     EmptyView()
                                 }
                                 .opacity(0)
                                 TodoListRowView(task: taskItem)
-                            }                                    .swipeActions {
+                            }
+                            .swipeActions {
                                 Button(role: .destructive) {
                                     deleteTask(task: taskItem)
                                 } label: {
@@ -193,9 +197,9 @@ struct ContentView: View {
     } // View
 
     private func move(from source: IndexSet, to destination: Int) {
-// try to use activeTodo rather than revisedItems. If works, keep it, otherwise change activeTodo back to revisedItems
+        // try to use activeTodo rather than revisedItems. If works, keep it, otherwise change activeTodo back to revisedItems
 
-//        var revisedItems: [TaskEntity] = activeTodo.map { $0 }
+        //        var revisedItems: [TaskEntity] = activeTodo.map { $0 }
 
         let itemToMove = source.first! // guard ... else { return }
         if itemToMove == destination { return }
@@ -221,30 +225,30 @@ struct ContentView: View {
             }
             activeTodo[itemToMove].order = newOrder
         }
-//        activeTodo.move(fromOffsets: source, toOffset: destination)
+        //        activeTodo.move(fromOffsets: source, toOffset: destination)
         coreDataManager.save()
 
-//        revisedItems.move(fromOffsets: source, toOffset: destination)
-//        if let oldIndex = source.first, oldIndex != destination {
-//            let newIndex = oldIndex < destination ? destination - 1 : destination
-//        }
-//
-//        for reverseIndex in stride(from: revisedItems.count - 1, through: 0, by: -1) {
-//            revisedItems[reverseIndex].order = Int64(reverseIndex)
-//        }
+        //        revisedItems.move(fromOffsets: source, toOffset: destination)
+        //        if let oldIndex = source.first, oldIndex != destination {
+        //            let newIndex = oldIndex < destination ? destination - 1 : destination
+        //        }
+        //
+        //        for reverseIndex in stride(from: revisedItems.count - 1, through: 0, by: -1) {
+        //            revisedItems[reverseIndex].order = Int64(reverseIndex)
+        //        }
     }
 
-//    private func insert(at offset: Int, itemProvider: [NSItemProvider]) {
-//        for provider in itemProvider {
-//            if provider.canLoadObject(ofClass: String.self) {
-//                _ = provider.loadObject(ofClass: String.self) { item, error in
-//                    DispatchQueue.main.async {
-//                        item.map { self.items.insert(TaskEntity(title: $0.absoluteString), at: offset) }
-//                    }
-//                }
-//            }
-//        }
-//    }
+    //    private func insert(at offset: Int, itemProvider: [NSItemProvider]) {
+    //        for provider in itemProvider {
+    //            if provider.canLoadObject(ofClass: String.self) {
+    //                _ = provider.loadObject(ofClass: String.self) { item, error in
+    //                    DispatchQueue.main.async {
+    //                        item.map { self.items.insert(TaskEntity(title: $0.absoluteString), at: offset) }
+    //                    }
+    //                }
+    //            }
+    //        }
+    //    }
 
     private func deleteTask(task: TaskEntity) {
         withAnimation {
