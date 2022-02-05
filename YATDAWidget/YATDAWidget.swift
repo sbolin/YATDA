@@ -38,13 +38,13 @@ struct Provider: TimelineProvider {
         let focusItems = results.filter { $0.focused == true }
 
         let titleString = focusItems.first?.title ?? "No Focus Item"
-        let priorityString = focusItems.first?.priority ?? "Non"
+        let priorityString = focusItems.first?.priority ?? "None"
         let dueDate = focusItems.first?.dateDue ?? Date()
 
         let entry = SimpleEntry(date: Date(), titleString: titleString, priority: Priority(rawValue: priorityString) ?? .non, dueDate: dueDate)
         entries.append(entry)
 
-        let timeline = Timeline(entries: entries, policy: .never)
+        let timeline = Timeline(entries: entries, policy: .atEnd) // .never
         completion(timeline)
     }
 }
@@ -76,10 +76,10 @@ struct YATDAWidgetEntryView : View {
                 HStack(alignment: .firstTextBaseline, spacing: 4) {
                     Circle()
                         .fill(Priority.styleForPriority(priorityString))
-                        .frame(width: 10, height: 10)
+                        .frame(width: 8, height: 8)
                     VStack(alignment: .leading, spacing: 6) {
                         Text(titleString)
-                            .font(.title3)
+                            .font(.body)
                             .minimumScaleFactor(0.6)
                             .foregroundColor(.indigo)
                         Text("Due \(dueDate.formatted(.relative(presentation: .numeric)))")

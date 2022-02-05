@@ -21,10 +21,8 @@ class TodoEditViewModel: ObservableObject {
         let todo: TaskEntity
         if let objectID = taskID, let fetchedRequest = fetchTodo(for: objectID, context: context) {
             todo = fetchedRequest
-            print("Fetched existing todo to update")
         } else {
             todo = TaskEntity(context: context)
-            print("Create new todo to save")
         }
         todo.title = todoValues.title
         todo.dateCreated = todoValues.dateCreated

@@ -39,11 +39,6 @@ struct TodoEditView: View {
         self._order = State(initialValue: todo.order)
         self._priority = State(initialValue: Priority.priorityGivenString(todo.priority!))  //
         self._priorityID = State(initialValue: todo.priorityID)
-        print("1. Editing todo...")
-        print("1. Passed in title: \(todo.title ?? "No Title")")
-        print("1. Passed in priority: \(todo.priority ?? "None")")
-        print("1. Initialized priority: \(priority.rawValue)")
-        print()
     }
 
     var body: some View {
@@ -93,9 +88,6 @@ struct TodoEditView: View {
                             priorityID = 3
                         }
                         priority = newPriority
-                        let _ = print("Changed Picker value:")
-                        let _ = print("onChange: \(priority.rawValue)")
-                        let _ = print("onChange: \(priorityID)")
                     }
                 } // Section
                 Section("Status") {
@@ -125,21 +117,8 @@ struct TodoEditView: View {
                 } // Section
 
             } // Form
+            // Note: .onAppear not used, values are set via init(). .onAppear sets values after view appears, so too late for picker. init() works properly.
 //            .onAppear {
-//                guard let taskID = task else { return }
-//                guard let todo = viewModel.fetchTodo(for: taskID, context: viewContext) else { return }
-//                self.title = self.todo.titleString
-//                self.completed = self.todo.completed
-//                self.dateCreated = self.todo.dateCreated ?? Date()
-//                self.dateDue = self.todo.dateDue ?? Date().advanced(by: 24 * 60 * 60)
-//                self.dateCompleted = self.todo.dateCompleted ?? nil
-//                self.focused = self.todo.focused
-//                self.id = self.todo.id ?? UUID()
-//                self.order = self.todo.order
-//                self.priority = Priority.priorityGivenString(self.todo.priorityString)
-//                self.priorityID = self.todo.priorityID
-//                let _ = print("onAppear: \(priority)")
-//                let _ = print("onAppear: \(priorityID)")
 //            }
             Spacer()
             HStack {
@@ -174,16 +153,6 @@ struct TodoEditView: View {
     }
 
     func saveTodo() {
-        print(#function)
-        print("2. Saving todo")
-        print("2. Title: \(title)")
-        print("2. Priority: \(priority)")
-        print("2. Saved priority: \(Priority.priorityGivenString(todo.priorityString))")
-        print("2. Priority id: \(priorityID)")
-        print()
-//        priorityID = 1
-//        if focused { priorityID = 0 }
-//        if completed { priorityID = 2 }
         let values = TodoValues(
             completed: completed,
             dateCompleted: dateCompleted,

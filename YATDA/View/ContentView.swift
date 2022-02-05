@@ -45,11 +45,30 @@ struct ContentView: View {
             .filter { $0.focused == true }
     }
 
+    let backgroundGradient = LinearGradient(
+        colors: [Color.blue.opacity(0.05), Color.white.opacity(0.05)],
+        startPoint: .top, endPoint: .bottom)
+
+    init() {
+        // set nav and status bar background
+        let appearance = UINavigationBarAppearance()
+        appearance.backgroundColor = UIColor(Color.blue.opacity(0.05))
+        appearance.shadowColor = .clear
+
+        UINavigationBar.appearance().standardAppearance = appearance
+        UINavigationBar.appearance().compactAppearance = appearance
+        UINavigationBar.appearance().scrollEdgeAppearance = appearance
+
+        // clear background from view
+        UITableView.appearance().backgroundColor = .clear
+    }
+
     var body: some View {
         NavigationView {
-            VStack {
+            VStack(spacing: 6) {
                 // add new todo...
                 AddTaskView()
+                    .padding(.top, 4)
                 List {
                     // Focus Task Section
                     Section {
@@ -72,6 +91,7 @@ struct ContentView: View {
                         }
                     } header: {
                         Label("Focus", systemImage: "target")
+                            .font(.body)
                             .foregroundColor(.pink)
                     } footer: {
                         HStack {
@@ -81,7 +101,7 @@ struct ContentView: View {
                                 .foregroundColor(.secondary)
                         }
                     }
-                    //                        .listRowSeparator(.hidden)
+                    .listRowSeparator(.hidden)
                     .accentColor(.pink)
 
                     // Active Task Section
@@ -107,6 +127,7 @@ struct ContentView: View {
                         //                        .onInsert(of: [.text], perform: insert)
                     } header: {
                         Label("To Do", systemImage: "checkmark.circle")
+                            .font(.body)
                             .foregroundColor(.blue)
                     } footer: {
                         HStack {
@@ -122,7 +143,7 @@ struct ContentView: View {
                             }
                         }
                     }
-                    //                        .listRowSeparator(.hidden)
+                    .listRowSeparator(.hidden)
                     .accentColor(.blue)
 
                     // Completed Task Section
@@ -147,6 +168,7 @@ struct ContentView: View {
                         //                            .onDelete { deleteTask(at: $0) }
                     } header: {
                         Label("Done", systemImage: "checkmark.circle.fill")
+                            .font(.body)
                             .foregroundColor(.green)
                     } footer: {
                         HStack {
@@ -162,11 +184,11 @@ struct ContentView: View {
                             }
                         }
                     }
-                    //                        .listRowSeparator(.hidden)
+                    .listRowSeparator(.hidden)
                     .accentColor(.green)
                 } // List
-                .listSectionSeparator(.hidden)
-                //                    .listRowSeparator(.hidden)
+                .listRowBackground(Color.clear)
+                .listStyle(.automatic)
             } // VStack
             .toolbar {
                 ToolbarItemGroup(placement: .navigationBarLeading) {
@@ -188,12 +210,15 @@ struct ContentView: View {
 
                 ToolbarItemGroup(placement: .navigationBarTrailing) {
                     EditButton()
+                        .tint(.green)
                 } // ToolbarItemGroup
             } // toolbar
             .navigationBarTitleDisplayMode(.inline)
             .environment(\.editMode, $editMode)
+            .background(backgroundGradient)
         } // NavigationView
-        .environment(\.defaultMinListHeaderHeight, 40)
+//        .navigationViewStyle(.automatic)
+        .environment(\.defaultMinListHeaderHeight, 32)
     } // View
 
     private func move(from source: IndexSet, to destination: Int) {

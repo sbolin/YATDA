@@ -15,7 +15,7 @@ struct AddTaskView: View {
 
     @State var title: String = ""
     @FocusState private var taskIsFocused: Bool
-    @State private var selectedPriority: Priority = .medium
+    @State private var selectedPriority: Priority = .non
 
     private var buttonColor: Color {
         return todoIsValid ? .accentColor : .gray.opacity(0.3)
@@ -28,6 +28,7 @@ struct AddTaskView: View {
     var body: some View {
         VStack(spacing: 12) {
             TextField("Enter New Task", text: $title)
+                .background(Color.white)
                 .padding(6)
                 .overlay(RoundedRectangle(cornerRadius: 8).stroke(Color.green, lineWidth: 2))
                 .focused($taskIsFocused)
@@ -52,8 +53,9 @@ struct AddTaskView: View {
             .background(buttonColor)
             .foregroundColor(.white)
             .clipShape(RoundedRectangle(cornerRadius: 10.0, style: .circular))
-            Divider()
-        }.padding(.horizontal)
+//            Divider()
+        }
+        .padding(.horizontal)
     }
 
     private func saveTask() {
@@ -78,8 +80,6 @@ struct AddTaskView: View {
 //        task.order = 1
         coreDataManager.save()
         WidgetCenter.shared.reloadAllTimelines()
-        print("Saving Task with priority: \(task.priority ?? "NA")")
-        print("and with priorityID: \(task.priorityID)")
     }
 }
 

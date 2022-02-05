@@ -20,7 +20,8 @@ struct TodoListRowView: View {
 
     var body: some View {
 
-        HStack(alignment: .center ,spacing: 0) {
+        HStack(alignment: .center ,spacing: 2) {
+            // change priority by tapping on colored dot or holding and selecting menu item
             Menu {
                 Picker("", selection: $selectedPriority) {
                     ForEach(Priority.allCases) { priority in
@@ -46,7 +47,7 @@ struct TodoListRowView: View {
                 } icon: {
                     Circle()
                         .fill(Priority.styleForPriority(task.priority ?? "Medium"))
-                        .frame(width: 15, height: 15)
+                        .frame(width: 16, height: 16)
                 }
             } primaryAction: {
                 switch task.priorityID {
@@ -71,12 +72,11 @@ struct TodoListRowView: View {
                     task.priority = Priority.non.rawValue
                     break
                 }
-                
-                print("Priority changed via dot to: \(task.priority ?? "No Priority"), \(task.priorityID)")
+                // save priority change
                 do {
                     try viewContext.save()
                 } catch {
-                    print("Save error")
+                    print(error.localizedDescription)
                 }
             }
             .frame(width: 40)
@@ -127,6 +127,7 @@ struct TodoListRowView: View {
                     }
                 }
         } // HStack
+        .background(Color.clear)
     }
 
     /// Helper function to unwrap optional binding

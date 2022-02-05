@@ -22,6 +22,7 @@ struct SortSelectionView: View {
             Label("Sort", systemImage: "line.horizontal.3.decrease.circle")
         }
         .pickerStyle(.inline)
+        .tint(.green)
     }
 }
 

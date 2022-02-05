@@ -172,9 +172,9 @@
 			isa = PBXGroup;
 			children = (
 				15086CEE277075D100047EDD /* YATDAWidgetExtension.entitlements */,
+				157569C42725EFD4001B387D /* ToDo.md */,
 				15A0F9012721E07D000B652A /* YATDA */,
 				15086CDA2770750A00047EDD /* YATDAWidget */,
-				157569C42725EFD4001B387D /* ToDo.md */,
 				15086CD52770750A00047EDD /* Frameworks */,
 				15A0F9002721E07D000B652A /* Products */,
 			);
