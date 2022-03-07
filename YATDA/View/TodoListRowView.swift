@@ -20,7 +20,7 @@ struct TodoListRowView: View {
 
     var body: some View {
 
-        HStack(alignment: .center ,spacing: 2) {
+        HStack(alignment: .center ,spacing: 0) {
             // change priority by tapping on colored dot or holding and selecting menu item
             Menu {
                 Picker("", selection: $selectedPriority) {
@@ -79,7 +79,7 @@ struct TodoListRowView: View {
                     print(error.localizedDescription)
                 }
             }
-            .frame(width: 40)
+            .frame(width: 32)
             VStack(alignment: .leading) {
                 TextField("", text: $task.title ?? "")
                     .submitLabel(SubmitLabel.done)
@@ -89,12 +89,14 @@ struct TodoListRowView: View {
                         }
                 }
                 HStack(alignment: .firstTextBaseline) {
-                    Text("Start:").bold()
+                    Text("Start:")
+                        .fontWeight(.semibold)
                     if let createdDate = task.dateCreated {
                         Text(createdDate.formatted(.dateTime.day().month(.abbreviated)))
                     }
                     Spacer()
-                    Text("Due:").bold()
+                    Text("Due:")
+                        .fontWeight(.semibold)
                     if let dueDate = task.dateDue {
 //                        Text(dueDate.formattedRelativeToday())
                         Text(dueDate.formatted(.dateTime.day().month(.abbreviated)))

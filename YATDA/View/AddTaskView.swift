@@ -28,9 +28,10 @@ struct AddTaskView: View {
     var body: some View {
         VStack(spacing: 12) {
             TextField("Enter New Task", text: $title)
-                .background(Color.white)
-                .padding(6)
-                .overlay(RoundedRectangle(cornerRadius: 8).stroke(Color.green, lineWidth: 2))
+                .textFieldStyle(.roundedBorder)
+//                .background(Color.white)
+//                .padding(6)
+//                .overlay(RoundedRectangle(cornerRadius: 8).stroke(Color.green, lineWidth: 1))
                 .focused($taskIsFocused)
                 .textInputAutocapitalization(.words)
 

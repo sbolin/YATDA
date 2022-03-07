@@ -67,7 +67,7 @@ struct YATDAWidgetEntryView : View {
         ZStack {
             Color(.systemOrange)
             VStack(alignment: .leading, spacing: 0) {
-                Text("FOCUS ITEM:")
+                Text("FOCUS TODO")
                     .font(.caption2).bold()
                     .foregroundColor(.pink)
                     .padding(2)
@@ -92,7 +92,7 @@ struct YATDAWidgetEntryView : View {
             .padding(6)
             .background(ContainerRelativeShape().fill(.white))
             .padding(8)
-        }
+        } // ZStack
         //        } // ForEach
     }
 }

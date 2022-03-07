@@ -1,5 +1,6 @@
 #  YATDA
 ## Things to do:
+- removed reordering, as it is problematic. Sortting works ok, so use that for now.
 - fix bugs
 - Widget is problematic....
 - Refactor
@@ -9,6 +10,8 @@
 
 ## One day to do:
 - "Simple entry" - like Reminders app, when entering todo hit return and new todo is automatically created
+- Notifications
+- Tags? (big change, as it requires change in DB)
 
 ## Fixed
 ~~- TodoEditView doesn't show correct priority in segmented picker and can't change it.~~

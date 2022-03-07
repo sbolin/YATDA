@@ -17,7 +17,7 @@ struct ContentView: View {
 //            SortDescriptor(\TaskEntity.order, order: .forward),
             SortDescriptor(\TaskEntity.priorityID, order: .reverse),
 //            SortDescriptor(\TaskEntity.dateCreated, order: .reverse)
-//            SortDescriptor(\TaskEntity.title, order: .forward)
+            SortDescriptor(\TaskEntity.title, order: .forward)
         ],
         animation: .default)
     private var allTasks: FetchedResults<TaskEntity>
@@ -27,7 +27,7 @@ struct ContentView: View {
 //    @State private var selectedPriority: Priority = .medium
     @State private var selectedSort = RequestSort.default
     //
-    @State private var editMode: EditMode = .inactive
+//    @State private var editMode: EditMode = .inactive
     //
 
     private var activeTodo: [TaskEntity] {
@@ -74,7 +74,6 @@ struct ContentView: View {
                     Section {
                         ForEach(focusTodo) { taskItem in
                             ZStack(alignment: .leading) {
-                                //                                NavigationLink(destination: TodoEditView(task: taskItem.objectID)) {
                                 NavigationLink(destination: TodoEditView(todo: taskItem)) {
                                     EmptyView()
                                 }
@@ -123,8 +122,8 @@ struct ContentView: View {
                                 }
                             }
                         }
-                        .onMove(perform: move)
-                        //                        .onInsert(of: [.text], perform: insert)
+//                        .onMove(perform: move)
+//                        .onInsert(of: [.text], perform: insert)
                     } header: {
                         Label("To Do", systemImage: "checkmark.circle")
                             .font(.body)
@@ -208,13 +207,13 @@ struct ContentView: View {
                     } // HStack
                 } // ToolbarItemGroup
 
-                ToolbarItemGroup(placement: .navigationBarTrailing) {
-                    EditButton()
-                        .tint(.green)
-                } // ToolbarItemGroup
+//                ToolbarItemGroup(placement: .navigationBarTrailing) {
+//                    EditButton()
+//                        .tint(.green)
+//                } // ToolbarItemGroup
             } // toolbar
             .navigationBarTitleDisplayMode(.inline)
-            .environment(\.editMode, $editMode)
+ //           .environment(\.editMode, $editMode)
             .background(backgroundGradient)
         } // NavigationView
 //        .navigationViewStyle(.automatic)
