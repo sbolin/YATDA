@@ -60,10 +60,7 @@ struct YATDAWidgetEntryView : View {
     var entry: Provider.Entry
 
     var body: some View {
-        //        ForEach(focusTodo) { task in
-        let titleString = entry.titleString // task.title ?? "No Current Task"
-        let dueDate = entry.dueDate // task.dateDue?.formatted(date: .abbreviated, time: .omitted) ?? ""
-        let priorityString = entry.priority.rawValue // task.priority
+//        ForEach(focusTodo) { task in
         ZStack {
             Color(.systemOrange)
             VStack(alignment: .leading, spacing: 0) {
@@ -75,14 +72,14 @@ struct YATDAWidgetEntryView : View {
                     .padding(.bottom, 4)
                 HStack(alignment: .firstTextBaseline, spacing: 4) {
                     Circle()
-                        .fill(Priority.styleForPriority(priorityString))
+                        .fill(Priority.styleForPriority(entry.priority.rawValue).opacity(0.5))
                         .frame(width: 8, height: 8)
-                    VStack(alignment: .leading, spacing: 6) {
-                        Text(titleString)
-                            .font(.body)
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text(entry.titleString)
+                            .font(.system(size: 14, weight: .medium, design: .rounded))
                             .minimumScaleFactor(0.6)
                             .foregroundColor(.indigo)
-                        Text("Due \(dueDate.formatted(.relative(presentation: .numeric)))")
+                        Text("Due \(entry.dueDate.formatted(.relative(presentation: .numeric)))")
                             .font(.caption2)
                             .foregroundColor(.gray)
                     }
@@ -93,7 +90,7 @@ struct YATDAWidgetEntryView : View {
             .background(ContainerRelativeShape().fill(.white))
             .padding(8)
         } // ZStack
-        //        } // ForEach
+//        } // ForEach
     }
 }
 
