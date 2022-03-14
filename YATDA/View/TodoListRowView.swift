@@ -10,6 +10,7 @@ import WidgetKit
 
 struct TodoListRowView: View {
     @Environment(\.managedObjectContext) private var viewContext
+    @StateObject private var notificationManager = NotificationManager()
     @ObservedObject var task: TaskEntity
     @State private var selectedPriority: Priority
 
@@ -116,7 +117,7 @@ struct TodoListRowView: View {
                 .foregroundColor(.red)
                 .onTapGesture {
                     withAnimation {
-                        updateTask()
+                        updateFocus()
                     }
                 }
                 .padding(.trailing, 6)
@@ -132,11 +133,18 @@ struct TodoListRowView: View {
         .background(Color.clear)
     }
 
-    /// Helper function to unwrap optional binding
-    private func updateTask() {
+    // Update focus
+    private func updateFocus() {
         withAnimation {
             let oldValue = task.focused
             task.focused = !oldValue
+            // oldValue = true means task is no longer focused, delete notifications
+            if oldValue {
+                task.notifiable = false
+                if let identifier = task.id?.uuidString {
+                    notificationManager.deleteLocalNotifications(identifiers: [identifier])
+                }
+            }
             do {
                 try viewContext.save()
             } catch {
@@ -150,11 +158,17 @@ struct TodoListRowView: View {
         withAnimation {
             let oldValue = task.completed
             task.completed = !oldValue
+            // !oldValue = true means task is now completed
+            // set dateCompleted to now, cancel notifications
             if !oldValue {
                 task.focused = false
-                task.dateCompleted = Date() // task has been completed
-            } else {
-                task.dateCompleted = nil // dateCompleted is reset if completed task is marked as incomplete
+                task.dateCompleted = Date.now
+                task.notifiable = false
+                if let identifier = task.id?.uuidString {
+                    notificationManager.deleteLocalNotifications(identifiers: [identifier])
+                }
+            } else { // task marked as incomplete, dateCompleted reset
+                task.dateCompleted = nil
             }
             do {
                 try viewContext.save()

@@ -12,30 +12,36 @@ struct TodoEditView: View {
     @Environment(\.managedObjectContext) private var viewContext
     @Environment(\.presentationMode) var presentation
     @ObservedObject var todo: TaskEntity
+    @ObservedObject var notificationManager: NotificationManager
     @ObservedObject private var viewModel = TodoEditViewModel()
 
+    @State private var title: String // = ""
     @State private var completed: Bool // = false
     @State private var dateCompleted: Date? // = nil
     @State private var dateCreated: Date // = Date()
     @State private var dateDue: Date // = Date()
     @State private var focused: Bool // = false
     @State private var id: UUID // = UUID()
+    @State private var notifiable: Bool
+    @State private var notifyTime: Date
     @State private var order: Int64 // = 0
     @State private var priority: Priority // = .medium
     @State private var priorityID: Int16 // = 2
-    @State private var title: String // = ""
 
     @State private var error = false
 
     init(todo: TaskEntity) {
         self.todo = todo
-        self._title = State(initialValue: todo.titleString)
+        self.notificationManager = NotificationManager()
+        self._title = State(initialValue: todo.title ?? "")
         self._completed = State(initialValue: todo.completed)
         self._dateCompleted = State(initialValue: todo.dateCompleted)
         self._dateCreated = State(initialValue: todo.dateCreated ?? Date())
         self._dateDue = State(initialValue: todo.dateDue ?? Date())
         self._focused = State(initialValue: todo.focused)
         self._id = State(initialValue: todo.id ?? UUID())
+        self._notifiable = State(initialValue: todo.notifiable)
+        self._notifyTime = State(initialValue: todo.notifyTime ?? Date.now)
         self._order = State(initialValue: todo.order)
         self._priority = State(initialValue: Priority.priorityGivenString(todo.priority!))  //
         self._priorityID = State(initialValue: todo.priorityID)
@@ -113,9 +119,30 @@ struct TodoEditView: View {
                         }
                         .toggleStyle(.button)
                         .tint(.clear)
-                    }
+                    } // HStack
+                    if focused { // focused
+                        HStack {
+                            Text("Notification")
+                            Spacer()
+                            Toggle(isOn: $notifiable) {
+                                Image(systemName: "bell")
+                                    .font(.title2)
+                                    .foregroundColor(.pink)
+                                    .symbolVariant(notifiable ? .fill : .none)
+                            }
+                            .toggleStyle(.button)
+                            .tint(.clear)
+                        }
+                        if notifiable {
+                            HStack {
+                                Text("Notification Time")
+                                Spacer()
+                                DatePicker("", selection: $notifyTime, displayedComponents: [.hourAndMinute])
+                                    .datePickerStyle(.compact)
+                            } // HStack
+                        }
+                    } // focused
                 } // Section
-
             } // Form
             // Note: .onAppear not used, values are set via init(). .onAppear sets values after view appears, so too late for picker. init() works properly.
 //            .onAppear {
@@ -160,13 +187,32 @@ struct TodoEditView: View {
             dateDue: dateDue,
             focused: focused,
             id: id,
+            notifiable: notifiable,
+            notifyTime: notifyTime,
             order: order,
             priority: priority.rawValue,
             priorityID: priorityID,
             title: title)
         viewModel.saveTodo(taskID: todo.objectID, with: values, in: viewContext)
-        presentation.wrappedValue.dismiss()
 
+        // generate notification if focused request
+        if focused {
+            let dateComponents = Calendar.current.dateComponents([.hour, .minute], from: notifyTime)
+            guard let hour = dateComponents.hour, let minute = dateComponents.minute else { return }
+            notificationManager.createLocalNotification(title: "Daily Todo Reminder",
+                                                        subtitle: "",
+                                                        body: title,
+                                                        notificationID: id.uuidString,
+                                                        hour: hour,
+                                                        minute: minute) { error in
+                if error != nil {
+                    print(error?.localizedDescription ?? "")
+                }
+            }
+        } else {
+            notificationManager.deleteLocalNotifications(identifiers: [id.uuidString])
+        }
+        presentation.wrappedValue.dismiss()
     }
 }
 

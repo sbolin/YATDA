@@ -20,8 +20,9 @@
 		15086CEA2770754D00047EDD /* Priority.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A0F9332722C2CA000B652A /* Priority.swift */; };
 		15086CEB2770755A00047EDD /* Date+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15086CCE27705E4900047EDD /* Date+Ext.swift */; };
 		1528213527269EC3009CD0A8 /* AddTodoButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1528213427269EC3009CD0A8 /* AddTodoButton.swift */; };
+		157355A727DE911D00902758 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 157355A627DE911D00902758 /* NotificationManager.swift */; };
 		15A0F9032721E07D000B652A /* YATDAApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A0F9022721E07D000B652A /* YATDAApp.swift */; };
-		15A0F9052721E07D000B652A /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A0F9042721E07D000B652A /* ContentView.swift */; };
+		15A0F9052721E07D000B652A /* MainTodoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A0F9042721E07D000B652A /* MainTodoView.swift */; };
 		15A0F9072721E07F000B652A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 15A0F9062721E07F000B652A /* Assets.xcassets */; };
 		15A0F90A2721E07F000B652A /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 15A0F9092721E07F000B652A /* Preview Assets.xcassets */; };
 		15A0F9122721E1E7000B652A /* SimpleTodoModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 15A0F9102721E1E7000B652A /* SimpleTodoModel.xcdatamodeld */; };
@@ -74,10 +75,11 @@
 		15086CED2770758900047EDD /* YATDA.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = YATDA.entitlements; sourceTree = "<group>"; };
 		15086CEE277075D100047EDD /* YATDAWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = YATDAWidgetExtension.entitlements; sourceTree = "<group>"; };
 		1528213427269EC3009CD0A8 /* AddTodoButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTodoButton.swift; sourceTree = "<group>"; };
+		157355A627DE911D00902758 /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
 		157569C42725EFD4001B387D /* ToDo.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = ToDo.md; sourceTree = "<group>"; };
 		15A0F8FF2721E07D000B652A /* YATDA.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = YATDA.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		15A0F9022721E07D000B652A /* YATDAApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YATDAApp.swift; sourceTree = "<group>"; };
-		15A0F9042721E07D000B652A /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		15A0F9042721E07D000B652A /* MainTodoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTodoView.swift; sourceTree = "<group>"; };
 		15A0F9062721E07F000B652A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		15A0F9092721E07F000B652A /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		15A0F9112721E1E7000B652A /* SimpleTodoModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = SimpleTodoModel.xcdatamodel; sourceTree = "<group>"; };
@@ -150,6 +152,7 @@
 				15BD2D5827739BC20021A4C9 /* TaskEntity+Ext.swift */,
 				15BD2D55277397590021A4C9 /* RequestSort.swift */,
 				15C2321527922B2C00924CDB /* TodoValues.swift */,
+				157355A627DE911D00902758 /* NotificationManager.swift */,
 				15A0F9102721E1E7000B652A /* SimpleTodoModel.xcdatamodeld */,
 			);
 			path = Model;
@@ -158,7 +161,7 @@
 		151E126E276143EF0057414F /* View */ = {
 			isa = PBXGroup;
 			children = (
-				15A0F9042721E07D000B652A /* ContentView.swift */,
+				15A0F9042721E07D000B652A /* MainTodoView.swift */,
 				15A0F9352722C6EF000B652A /* TodoListRowView.swift */,
 				15C2321727963E5700924CDB /* AddTaskView.swift */,
 				1528213427269EC3009CD0A8 /* AddTodoButton.swift */,
@@ -337,7 +340,7 @@
 				15C2321627922B2C00924CDB /* TodoValues.swift in Sources */,
 				15A0F9122721E1E7000B652A /* SimpleTodoModel.xcdatamodeld in Sources */,
 				1528213527269EC3009CD0A8 /* AddTodoButton.swift in Sources */,
-				15A0F9052721E07D000B652A /* ContentView.swift in Sources */,
+				15A0F9052721E07D000B652A /* MainTodoView.swift in Sources */,
 				15D9708A2773B4A800428070 /* SortSelectionView.swift in Sources */,
 				15A0F9362722C6EF000B652A /* TodoListRowView.swift in Sources */,
 				15C232112790FECD00924CDB /* TodoEditView.swift in Sources */,
@@ -345,6 +348,7 @@
 				15086CCF27705E4900047EDD /* Date+Ext.swift in Sources */,
 				15A0F9342722C2CA000B652A /* Priority.swift in Sources */,
 				15086CCB2770482B00047EDD /* Font+Rounded.swift in Sources */,
+				157355A727DE911D00902758 /* NotificationManager.swift in Sources */,
 				15A0F9032721E07D000B652A /* YATDAApp.swift in Sources */,
 				15C2321827963E5700924CDB /* AddTaskView.swift in Sources */,
 				15C232142792274F00924CDB /* TodoEditViewModel.swift in Sources */,

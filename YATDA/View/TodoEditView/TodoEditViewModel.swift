@@ -24,15 +24,18 @@ class TodoEditViewModel: ObservableObject {
         } else {
             todo = TaskEntity(context: context)
         }
-        todo.title = todoValues.title
+        todo.completed = todoValues.completed
+        todo.dateCompleted = todoValues.dateCompleted
         todo.dateCreated = todoValues.dateCreated
         todo.dateDue = todoValues.dateDue
-        todo.dateCompleted = todoValues.dateCompleted
-        todo.completed = todoValues.completed
         todo.focused = todoValues.focused
+        todo.id = todoValues.id
+        todo.notifiable = todoValues.notifiable
+        todo.notifyTime = todoValues.notifyTime
+        todo.order = todoValues.order
         todo.priority = todoValues.priority
         todo.priorityID = todoValues.priorityID
-        todo.id = todoValues.id
+        todo.title = todoValues.title
 
         coreDataManager.save()
     }

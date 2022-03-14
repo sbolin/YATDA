@@ -12,6 +12,8 @@ struct AddTaskView: View {
 
     @Environment(\.managedObjectContext) private var viewContext
     let coreDataManager: CoreDataManager = .shared
+    @ObservedObject var notificationManager: NotificationManager
+
 
     @State var title: String = ""
     @FocusState private var taskIsFocused: Bool
@@ -74,10 +76,11 @@ struct AddTaskView: View {
         case .high:
             task.priorityID = 3
         }
-        task.dateCreated = Date()
+        task.dateCreated = Date.now
         // default due date is 1 day after creation.
         task.dateDue = Date().addingTimeInterval(60 * 60 * 24) // + 1 day
         task.completed = false
+        task.notifiable = false
 //        task.order = 1
         coreDataManager.save()
         WidgetCenter.shared.reloadAllTimelines()
@@ -86,6 +89,6 @@ struct AddTaskView: View {
 
 struct AddTaskView_Previews: PreviewProvider {
     static var previews: some View {
-        AddTaskView()
+        AddTaskView(notificationManager: NotificationManager())
     }
 }

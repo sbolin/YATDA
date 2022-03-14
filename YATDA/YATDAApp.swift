@@ -30,7 +30,7 @@ struct YATDAApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            MainTodoView()
                 .font(.system(.body, design: .rounded))
                 .environment(\.managedObjectContext, CoreDataManager.shared.container.viewContext)
         }

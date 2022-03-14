@@ -1,5 +1,5 @@
 //
-//  ContentView.swift
+//  MainTodoView.swift
 //  YATDA
 //
 //  Created by Scott Bolin on 22-Oct-21.
@@ -8,26 +8,27 @@
 import SwiftUI
 import WidgetKit
 
-struct ContentView: View {
+struct MainTodoView: View {
     @Environment(\.managedObjectContext) private var viewContext
+    @StateObject private var notificationManager = NotificationManager()
     let coreDataManager: CoreDataManager = .shared
 
     @FetchRequest<TaskEntity>(
         sortDescriptors: [
-//            SortDescriptor(\TaskEntity.order, order: .forward),
+            //            SortDescriptor(\TaskEntity.order, order: .forward),
             SortDescriptor(\TaskEntity.priorityID, order: .reverse),
-//            SortDescriptor(\TaskEntity.dateCreated, order: .reverse)
+            //            SortDescriptor(\TaskEntity.dateCreated, order: .reverse)
             SortDescriptor(\TaskEntity.title, order: .forward)
         ],
         animation: .default)
     private var allTasks: FetchedResults<TaskEntity>
 
-//    @FocusState private var taskIsFocused: Bool
-//    @State private var title: String = ""
-//    @State private var selectedPriority: Priority = .medium
+    //    @FocusState private var taskIsFocused: Bool
+    //    @State private var title: String = ""
+    //    @State private var selectedPriority: Priority = .medium
     @State private var selectedSort = RequestSort.default
     //
-//    @State private var editMode: EditMode = .inactive
+    //    @State private var editMode: EditMode = .inactive
     //
 
     private var activeTodo: [TaskEntity] {
@@ -53,6 +54,7 @@ struct ContentView: View {
         // set nav and status bar background
         let appearance = UINavigationBarAppearance()
         appearance.backgroundColor = UIColor(Color.blue.opacity(0.05))
+        //        appearance.backgroundColor = UIColor(Color.white)
         appearance.shadowColor = .clear
 
         UINavigationBar.appearance().standardAppearance = appearance
@@ -67,7 +69,7 @@ struct ContentView: View {
         NavigationView {
             VStack(spacing: 6) {
                 // add new todo...
-                AddTaskView()
+                AddTaskView(notificationManager: notificationManager)
                     .padding(.top, 4)
                 List {
                     // Focus Task Section
@@ -122,8 +124,8 @@ struct ContentView: View {
                                 }
                             }
                         }
-//                        .onMove(perform: move)
-//                        .onInsert(of: [.text], perform: insert)
+                        //                        .onMove(perform: move)
+                        //                        .onInsert(of: [.text], perform: insert)
                     } header: {
                         Label("To Do", systemImage: "checkmark.circle")
                             .font(.body)
@@ -188,6 +190,20 @@ struct ContentView: View {
                 } // List
                 .listRowBackground(Color.clear)
                 .listStyle(.automatic)
+                .onAppear(perform: notificationManager.reloadAuthorizationStatus)
+                .onChange(of: notificationManager.authorizationStatus) { authStatus in
+                    switch authStatus {
+                    case .notDetermined:
+                        notificationManager.requestAuthorization()
+                    case .authorized:
+                        notificationManager.reloadLocalNotifications()
+                    default:
+                        break
+                    }
+                }
+                .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
+                    notificationManager.reloadAuthorizationStatus()
+                }
             } // VStack
             .toolbar {
                 ToolbarItemGroup(placement: .navigationBarLeading) {
@@ -207,16 +223,16 @@ struct ContentView: View {
                     } // HStack
                 } // ToolbarItemGroup
 
-//                ToolbarItemGroup(placement: .navigationBarTrailing) {
-//                    EditButton()
-//                        .tint(.green)
-//                } // ToolbarItemGroup
+                //                ToolbarItemGroup(placement: .navigationBarTrailing) {
+                //                    EditButton()
+                //                        .tint(.green)
+                //                } // ToolbarItemGroup
             } // toolbar
             .navigationBarTitleDisplayMode(.inline)
- //           .environment(\.editMode, $editMode)
-            .background(backgroundGradient)
+            //           .environment(\.editMode, $editMode)
+            .background(Color.blue.opacity(0.05)) // backgroundGradient
         } // NavigationView
-//        .navigationViewStyle(.automatic)
+          //        .navigationViewStyle(.automatic)
         .environment(\.defaultMinListHeaderHeight, 32)
     } // View
 
@@ -276,6 +292,9 @@ struct ContentView: View {
 
     private func deleteTask(task: TaskEntity) {
         withAnimation {
+            if let identifier = task.id?.uuidString {
+                notificationManager.deleteLocalNotifications(identifiers: [identifier])
+            }
             coreDataManager.deleteTask(task: task, context: viewContext)
         }
         WidgetCenter.shared.reloadAllTimelines()
@@ -284,7 +303,7 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        MainTodoView()
     }
 }
 
