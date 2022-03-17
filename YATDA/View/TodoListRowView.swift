@@ -89,7 +89,7 @@ struct TodoListRowView: View {
                             textField.selectedTextRange = textField.textRange(from: textField.beginningOfDocument, to: textField.endOfDocument)
                         }
                 }
-                HStack(alignment: .firstTextBaseline) {
+                HStack(alignment: .firstTextBaseline, spacing: 0) {
                     Text("Start:")
                         .fontWeight(.semibold)
                     if let createdDate = task.dateCreated {
@@ -157,19 +157,27 @@ struct TodoListRowView: View {
     private func updateCompletion() {
         withAnimation {
             let oldValue = task.completed
-            task.completed = !oldValue
-            // !oldValue = true means task is now completed
-            // set dateCompleted to now, cancel notifications
-            if !oldValue {
-                task.focused = false
-                task.dateCompleted = Date.now
-                task.notifiable = false
-                if let identifier = task.id?.uuidString {
-                    notificationManager.deleteLocalNotifications(identifiers: [identifier])
-                }
-            } else { // task marked as incomplete, dateCompleted reset
-                task.dateCompleted = nil
+/*
+oldValue = true means previously completed task marked as incomplete: reset dateCompleted
+oldValue = false means task is marked completed: set dateCompleted to now
+in both cases focused and notifiable are set to false, and cancel local notifications:
+ (1) completed task can't be focused and unfocused task can't have notifications, and
+ (2) since task was previously completed it defaults to unfocused and no notifications
+*/
+            task.focused = false
+            task.notifiable = false
+            if let identifier = task.id?.uuidString {
+                notificationManager.deleteLocalNotifications(identifiers: [identifier])
             }
+
+            if oldValue {
+                task.completed = false
+                task.dateCompleted = nil
+            } else {
+                task.completed = true
+                task.dateCompleted = Date.now
+            }
+
             do {
                 try viewContext.save()
             } catch {

@@ -1,5 +1,6 @@
 #  YATDA
 ## Things to do:
+- Add notes to todo (change in core data)
 - Refactor
 
 ## Bugs to fix:
@@ -7,7 +8,7 @@
 
 ## One day to do:
 - "Simple entry" - like Reminders app, when entering todo hit return and new todo is automatically created
-- Tags? (big change, as it requires change in DB)
+- Tags? (requires change in DB)
 
 ## Fixed
 ~~- Daily Notification~~

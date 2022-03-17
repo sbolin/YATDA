@@ -52,7 +52,7 @@ struct AddTaskView: View {
                 taskIsFocused = false
             }
             .disabled(!todoIsValid)
-            .frame(width: 90, height: 32)
+            .frame(width: 125, height: 32)
             .background(buttonColor)
             .foregroundColor(.white)
             .clipShape(RoundedRectangle(cornerRadius: 10.0, style: .circular))
