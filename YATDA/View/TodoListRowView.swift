@@ -46,9 +46,10 @@ struct TodoListRowView: View {
                 Label {
                     Text("")
                 } icon: {
+                    // TODO: frame must be at least 18x18 for menu/tap to work consistently. However, circle size is much to big (should be ~12x12). Need to make this a simple image with tapGesture.
                     Circle()
                         .fill(Priority.styleForPriority(task.priority ?? "Medium"))
-                        .frame(width: 16, height: 16)
+                        .frame(width: 18, height: 18)
                 }
             } primaryAction: {
                 switch task.priorityID {
@@ -81,6 +82,7 @@ struct TodoListRowView: View {
                 }
             }
             .frame(width: 32)
+//            .contentShape(Rectangle())
             VStack(alignment: .leading) {
                 TextField("", text: $task.title ?? "")
                     .submitLabel(SubmitLabel.done)
