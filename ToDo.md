@@ -6,6 +6,7 @@
 
 ## Bugs to fix:
 - Reordering is broken and removed. Sort view works ok, so use that for now.
+- TodoEditView textEditor field frame height seems to be broken - height on screen doesn't follow minHeight or height of frame. Should be SwiftUI bug.
 
 ## In Progress:
 
