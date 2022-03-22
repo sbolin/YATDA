@@ -14,6 +14,7 @@ struct TodoValues {
     let dateDue: Date
     let focused: Bool
     let id: UUID
+    let note: String?
     let notifiable: Bool
     let notifyTime: Date
     let order: Int64

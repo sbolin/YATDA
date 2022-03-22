@@ -30,6 +30,7 @@ class TodoEditViewModel: ObservableObject {
         todo.dateDue = todoValues.dateDue
         todo.focused = todoValues.focused
         todo.id = todoValues.id
+        todo.note = todoValues.note
         todo.notifiable = todoValues.notifiable
         todo.notifyTime = todoValues.notifyTime
         todo.order = todoValues.order

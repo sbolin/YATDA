@@ -62,33 +62,33 @@ struct YATDAWidgetEntryView : View {
     var body: some View {
 //        ForEach(focusTodo) { task in
         ZStack {
-            Color(.systemOrange)
+            Color(.purple)
             VStack(alignment: .leading, spacing: 0) {
                 Text("FOCUS TODO")
-                    .font(.caption2).bold()
+                    .fontWeight(.semibold)
                     .foregroundColor(.pink)
                     .padding(2)
                 Divider()
-                    .padding(.bottom, 4)
+                    .padding(.bottom, 2)
                 HStack(alignment: .firstTextBaseline, spacing: 4) {
                     Circle()
-                        .fill(Priority.styleForPriority(entry.priority.rawValue).opacity(0.5))
+                        .fill(Priority.styleForPriority(entry.priority.rawValue).opacity(0.75))
                         .frame(width: 8, height: 8)
                     VStack(alignment: .leading, spacing: 4) {
                         Text(entry.titleString)
-                            .font(.system(size: 14, weight: .medium, design: .rounded))
+                            .font(.system(size: 13, weight: .medium, design: .rounded))
                             .minimumScaleFactor(0.6)
                             .foregroundColor(.indigo)
                         Text("Due \(entry.dueDate.formatted(.relative(presentation: .numeric)))")
-                            .font(.caption2)
                             .foregroundColor(.gray)
                     }
                 }
                 Spacer(minLength: 0)
             } // VStack
+            .font(.caption2)
             .padding(6)
             .background(ContainerRelativeShape().fill(.white))
-            .padding(8)
+            .padding(6)
         } // ZStack
 //        } // ForEach
     }

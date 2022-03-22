@@ -16,7 +16,7 @@ struct RequestSort: Hashable, Identifiable {
     static let sorts: [RequestSort] = [
         RequestSort(
             id: 0,
-            name: "By Priority",
+            name: "Default",
             descriptors: [
                 SortDescriptor(\TaskEntity.priorityID, order: .reverse),
                 SortDescriptor(\TaskEntity.dateCreated, order: .reverse),

@@ -50,21 +50,6 @@ struct MainTodoView: View {
         colors: [Color.blue.opacity(0.05), Color.white.opacity(0.05)],
         startPoint: .top, endPoint: .bottom)
 
-    init() {
-        // set nav and status bar background
-        let appearance = UINavigationBarAppearance()
-        appearance.backgroundColor = UIColor(Color.blue.opacity(0.05))
-        //        appearance.backgroundColor = UIColor(Color.white)
-        appearance.shadowColor = .clear
-
-        UINavigationBar.appearance().standardAppearance = appearance
-        UINavigationBar.appearance().compactAppearance = appearance
-        UINavigationBar.appearance().scrollEdgeAppearance = appearance
-
-        // clear background from view
-        UITableView.appearance().backgroundColor = .clear
-    }
-
     var body: some View {
         NavigationView {
             VStack(spacing: 6) {
@@ -229,11 +214,10 @@ struct MainTodoView: View {
                 //                } // ToolbarItemGroup
             } // toolbar
             .navigationBarTitleDisplayMode(.inline)
-            //           .environment(\.editMode, $editMode)
-            .background(Color.blue.opacity(0.05)) // backgroundGradient
+            .background(Color.blue.opacity(0.1))
         } // NavigationView
-          //        .navigationViewStyle(.automatic)
         .environment(\.defaultMinListHeaderHeight, 32)
+        .accentColor(.green)
     } // View
 
     private func move(from source: IndexSet, to destination: Int) {

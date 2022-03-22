@@ -13,6 +13,7 @@ struct YATDAApp: App {
     @Environment(\.scenePhase) var scenePhase
 
     // shim to allow for rounded text in NavigationView titles. Thanks to Peter Friese
+    // Change background color of all views, and altern nav bar to match. Must set background color in each view (don't forget!)
 
     init() {
         let navBarAppearance = UINavigationBarAppearance()
@@ -21,11 +22,15 @@ struct YATDAApp: App {
         navBarAppearance.largeTitleTextAttributes[.foregroundColor] = UIColor(Color.accentColor)
         navBarAppearance.titleTextAttributes[.font] = UIFont.roundedBody()
 
-        // Purposefully don't set the foreground color for normal text nav bar -
-        // in Reminders.app, this isn't tinted as well!
-        // navBarAppearance.titleTextAttributes[.foregroundColor] = foregroundColor
+        navBarAppearance.backgroundColor = UIColor(Color.blue.opacity(0.1))
+        navBarAppearance.shadowColor = .clear
 
         UINavigationBar.appearance().standardAppearance = navBarAppearance
+        UINavigationBar.appearance().compactAppearance = navBarAppearance
+        UINavigationBar.appearance().scrollEdgeAppearance = navBarAppearance
+
+        // clear background from view
+        UITableView.appearance().backgroundColor = .clear
     }
 
     var body: some Scene {

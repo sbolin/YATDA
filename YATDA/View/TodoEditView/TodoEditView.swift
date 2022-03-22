@@ -12,7 +12,7 @@ struct TodoEditView: View {
     @Environment(\.managedObjectContext) private var viewContext
     @Environment(\.presentationMode) var presentation
     @ObservedObject var todo: TaskEntity
-    @ObservedObject var notificationManager: NotificationManager
+    @ObservedObject private var notificationManager = NotificationManager()
     @ObservedObject private var viewModel = TodoEditViewModel()
 
     @State private var title: String // = ""
@@ -22,6 +22,7 @@ struct TodoEditView: View {
     @State private var dateDue: Date // = Date()
     @State private var focused: Bool // = false
     @State private var id: UUID // = UUID()
+    @State private var note: String
     @State private var notifiable: Bool
     @State private var notifyTime: Date
     @State private var order: Int64 // = 0
@@ -32,14 +33,15 @@ struct TodoEditView: View {
 
     init(todo: TaskEntity) {
         self.todo = todo
-        self.notificationManager = NotificationManager()
+//        self.notificationManager = NotificationManager()
         self._title = State(initialValue: todo.title ?? "")
         self._completed = State(initialValue: todo.completed)
         self._dateCompleted = State(initialValue: todo.dateCompleted)
-        self._dateCreated = State(initialValue: todo.dateCreated ?? Date())
-        self._dateDue = State(initialValue: todo.dateDue ?? Date())
+        self._dateCreated = State(initialValue: todo.dateCreated ?? Date.now)
+        self._dateDue = State(initialValue: todo.dateDue ?? Date.now)
         self._focused = State(initialValue: todo.focused)
         self._id = State(initialValue: todo.id ?? UUID())
+        self._note = State(initialValue: todo.note ?? "")
         self._notifiable = State(initialValue: todo.notifiable)
         self._notifyTime = State(initialValue: todo.notifyTime ?? Date.now)
         self._order = State(initialValue: todo.order)
@@ -48,9 +50,7 @@ struct TodoEditView: View {
     }
 
     var body: some View {
-
-        VStack {
-            Form {
+            List {
                 Section(header: Text("Task")) {
                     // use ZStack to mimic TextField title (TextEditor does not have this)
                     ZStack(alignment: .topLeading) {
@@ -66,12 +66,31 @@ struct TodoEditView: View {
                             .multilineTextAlignment(.leading)
                             .allowsTightening(false)
                             .textInputAutocapitalization(.sentences)
-                            .frame(minHeight: 72)
+//                            .lineLimit(3)
+//                            .frame(minHeight: 28)
                     }
                     if error {
                         Text("Task is required").foregroundColor(.red)
                     }
+                    ZStack(alignment: .topLeading) {
+                        if note.isEmpty {
+                            Text("Note?")
+                                .foregroundColor(Color(UIColor.placeholderText))
+                                .font(.body)
+                                .padding(.horizontal, 5)
+                                .padding(.vertical, 8)
+                        }
+                        TextEditor(text: $note)
+                            .font(.body)
+                            .multilineTextAlignment(.leading)
+                            .allowsTightening(false)
+                            .textInputAutocapitalization(.sentences)
+//                            .lineLimit(3)
+//                            .frame(minHeight: 44)
+                    }
+
                     DatePicker("Creation Date", selection: $dateCreated, displayedComponents: .date)
+
                     DatePicker("Due Date", selection: $dateDue, displayedComponents: .date)
 
                     Picker("Priority", selection: $priority) {
@@ -96,7 +115,9 @@ struct TodoEditView: View {
                         priority = newPriority
                     }
                 } // Section
-                Section("Status") {
+                .listRowSeparator(.hidden)
+
+                Section(header: Text("Status")) {
                     HStack {
                         Text("Focus")
                         Spacer()
@@ -143,41 +164,46 @@ struct TodoEditView: View {
                         }
                     } // focused
                 } // Section
-            } // Form
-            // Note: .onAppear not used, values are set via init(). .onAppear sets values after view appears, so too late for picker. init() works properly.
-//            .onAppear {
-//            }
-            Spacer()
-            HStack {
-                Button {
-                    presentation.wrappedValue.dismiss()
-                } label: {
-                    Text("Cancel")
-                }
-                .buttonStyle(.bordered)
-                .accentColor(.red)
+                .listRowSeparator(.hidden)
 
-                Spacer()
+                Section(header: Text("Action")) {
+                    HStack {
+                        Button {
+                            presentation.wrappedValue.dismiss()
+                        } label: {
+                            Text("Cancel")
+                        }
+                        .buttonStyle(.bordered)
+                        .accentColor(.red)
 
-                Button {
-                    if title.isEmpty {
-                        error = title.isEmpty
-                    } else {
-                        saveTodo()
-                    }
-                } label: {
-                    Text("Save")
-                        .fontWeight(.medium)
-                }
-                .buttonStyle(.borderedProminent)
-                .accentColor(.green)
-                .disabled(title.isEmpty)
-            } // HStack
-            .padding(.horizontal, 30)
-        } // VStack
-        .navigationTitle("Edit Todo")
-        .navigationBarTitleDisplayMode(.inline)
-    }
+                        Spacer()
+
+                        Button {
+                            if title.isEmpty {
+                                error = title.isEmpty
+                            } else {
+                                saveTodo()
+                            }
+                        } label: {
+                            Text("Save")
+                                .fontWeight(.medium)
+                        }
+                        .buttonStyle(.borderedProminent)
+                        .accentColor(.green)
+                        .disabled(title.isEmpty)
+                    } // HStack
+                    .padding(.horizontal, 30)
+                    .padding(.vertical, 8)
+//                    .background(Color.white)
+                } // Section
+                .listRowSeparator(.hidden)
+            } // List
+            .listStyle(.automatic)
+            .navigationTitle("Edit Todo")
+            .navigationBarTitleDisplayMode(.inline)
+            .background(Color.blue.opacity(0.1))
+            // Note: .onAppear is not used for setting passed in values, as they are set too late for picker.  setting via init() works properly.
+    } // View
 
     func saveTodo() {
         let values = TodoValues(
@@ -187,6 +213,7 @@ struct TodoEditView: View {
             dateDue: dateDue,
             focused: focused,
             id: id,
+            note: note,
             notifiable: notifiable,
             notifyTime: notifyTime,
             order: order,
@@ -195,8 +222,8 @@ struct TodoEditView: View {
             title: title)
         viewModel.saveTodo(taskID: todo.objectID, with: values, in: viewContext)
 
-        // generate notification if focused request
-        if focused {
+        // generate notification if request is focused & notifiable
+        if focused && notifiable {
             let dateComponents = Calendar.current.dateComponents([.hour, .minute], from: notifyTime)
             guard let hour = dateComponents.hour, let minute = dateComponents.minute else { return }
             notificationManager.createLocalNotification(title: "Daily Todo Reminder",
