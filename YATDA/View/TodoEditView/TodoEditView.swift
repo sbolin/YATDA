@@ -66,8 +66,9 @@ struct TodoEditView: View {
                             .multilineTextAlignment(.leading)
                             .allowsTightening(false)
                             .textInputAutocapitalization(.sentences)
-                            .lineLimit(2)
-                            .frame(height: 32)
+                            .fixedSize(horizontal: false, vertical: true)
+//                            .lineLimit(2)
+//                            .frame(height: 32)
                     }
                     if error {
                         Text("Task is required").foregroundColor(.red)
@@ -85,8 +86,9 @@ struct TodoEditView: View {
                             .multilineTextAlignment(.leading)
                             .allowsTightening(false)
                             .textInputAutocapitalization(.sentences)
-                            .lineLimit(4)
-                            .frame(height: 64)
+                            .fixedSize(horizontal: false, vertical: true)
+//                            .lineLimit(4)
+//                            .frame(height: 64)
                     }
 
                     DatePicker("Creation Date", selection: $dateCreated, displayedComponents: .date)
